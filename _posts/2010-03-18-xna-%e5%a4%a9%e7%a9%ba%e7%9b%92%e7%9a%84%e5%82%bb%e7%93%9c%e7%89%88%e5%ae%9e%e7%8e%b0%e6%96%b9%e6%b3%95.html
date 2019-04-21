@@ -1,0 +1,55 @@
+---
+layout: post
+status: publish
+published: true
+title: XNA 天空盒的傻瓜版实现方法
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+excerpt: '额<br />天空是必不可少的.<br />所以说,一种傻瓜实现方法<br /><br />1、下载大地无敌做好拆好UV的天空盒.X模型！<br
+  /><a href="http://cid-329fed9032303774.skydrive.live.com/self.aspx/%e5%a4%a7%e5%9c%b0%e6%97%a0%e6%95%8c%e7%9a%84%e4%bd%9c%e5%93%81%e5%82%a8%e8%97%8f%e5%ae%a4/%e5%85%b6%e5%ae%83/%e5%a4%a9%e7%a9%ba%e7%9b%92.rar"
+  target="_blank">点此下载</a><br />或<a href="http://gquit.agrp.info/upload/2010/3/201003182308011327.rar"
+  target="_blank">201003182308011327.rar</a><br /><br />2、解压加入到Content里！<br /><img
+  src="http://gquit.agrp.info/upload/2010/3/201003182309300404.JPG" alt="" title=""
+  /><br /><br />...
+
+'
+wordpress_id: 239
+wordpress_url: http://www.agrp.info/?p=239
+date: '2010-03-18 22:54:25 +0900'
+date_gmt: '2010-03-18 14:54:25 +0900'
+categories:
+- 中文
+tags:
+- XNA
+- 天空盒
+comments:
+- id: 41
+  author: 杨漱玉青
+  
+  author_url: http://www.ispinel.com/
+  date: '2010-03-22 18:59:12 +0900'
+  date_gmt: '2010-03-22 10:59:12 +0900'
+  content: 'Hi,非常感谢你的资源～<blockquote><div class="quote quote3"><div class="quote-title">大地无敌
+    于 3/23/2010 10:15:24 PM 回复</div>客气客气~~</div></blockquote>
+
+'
+---
+<p>额<br />天空是必不可少的.<br />所以说,一种傻瓜实现方法</p>
+<p>1、下载大地无敌做好拆好UV的天空盒.X模型！<br /><a href="http://cid-329fed9032303774.skydrive.live.com/self.aspx/%e5%a4%a7%e5%9c%b0%e6%97%a0%e6%95%8c%e7%9a%84%e4%bd%9c%e5%93%81%e5%82%a8%e8%97%8f%e5%ae%a4/%e5%85%b6%e5%ae%83/%e5%a4%a9%e7%a9%ba%e7%9b%92.rar" target="_blank">点此下载</a><br />或<a href="http://gquit.agrp.info/upload/2010/3/201003182308011327.rar" target="_blank">201003182308011327.rar</a></p>
+<p>2、解压加入到Content里！<br /><img src="http://gquit.agrp.info/upload/2010/3/201003182309300404.JPG" alt="" title="" /></p>
+<p>3、写代码把它画出来！<br />model变量请读入Skybox.X模型<br />texture是你画的贴图~当然也可以用大地无敌画的sky1.png!
+<p class="code"><code>Model&nbsp;model;<br />Texture2D&nbsp;texture;<br /></code></p>
+<p>在Draw函数这样写！</p>
+<p class="code"><code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GraphicsDevice.RenderState.DepthBufferEnable&nbsp;=&nbsp;false;//禁用深度测试，避免挡住后面的物体！<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GraphicsDevice.RenderState.DepthBufferWriteEnable&nbsp;=&nbsp;false;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Matrix[]&nbsp;skytransforms&nbsp;=&nbsp;new&nbsp;Matrix[model.Bones.Count];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model.CopyAbsoluteBoneTransformsTo(skytransforms);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(ModelMesh&nbsp;mesh&nbsp;in&nbsp;model.Meshes)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;This&nbsp;is&nbsp;where&nbsp;the&nbsp;mesh&nbsp;orientation&nbsp;is&nbsp;set,&nbsp;as&nbsp;well&nbsp;as&nbsp;our&nbsp;camera&nbsp;and&nbsp;projection.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(BasicEffect&nbsp;effect&nbsp;in&nbsp;mesh.Effects)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effect.TextureEnabled&nbsp;=&nbsp;true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effect.Texture&nbsp;=&nbsp;texture;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effect.AmbientLightColor&nbsp;=&nbsp;new&nbsp;Vector3(1,&nbsp;1,&nbsp;1);//仅开启环境光<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effect.World&nbsp;=&nbsp;skytransforms[mesh.ParentBone.Index]<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Matrix.CreateScale(2000.0f)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;rotationMatrix<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Matrix.CreateTranslation(赋予相机位置);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effect.View&nbsp;=&nbsp;赋予相机的观察矩阵;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effect.Projection&nbsp;=&nbsp;赋予相机的投影矩阵;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Draw&nbsp;the&nbsp;mesh,&nbsp;using&nbsp;the&nbsp;effects&nbsp;set&nbsp;above.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mesh.Draw();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GraphicsDevice.RenderState.DepthBufferEnable&nbsp;=&nbsp;true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GraphicsDevice.RenderState.DepthBufferWriteEnable&nbsp;=&nbsp;true;</p>
+<p></code></p>
+<p>要自己画贴图，这里有天空盒模型的UV图，在框框里画就可以了！<br /><img src="http://gquit.agrp.info/upload/2010/3/201003182323338655.png" alt="" title="" /><br />只用单幅贴图，貌似贴图空间浪费比较大，但使用一个贴图很好绘画！，不容易画得衔接不上！</p>
+<p>效果图<br /><img src="http://gquit.agrp.info/upload/2010/3/201003182326392484.jpg" alt="" title="" /></p>
+<p><img src="http://gquit.agrp.info/upload/2010/3/201003182325578102.jpg" alt="" title="" /></p>

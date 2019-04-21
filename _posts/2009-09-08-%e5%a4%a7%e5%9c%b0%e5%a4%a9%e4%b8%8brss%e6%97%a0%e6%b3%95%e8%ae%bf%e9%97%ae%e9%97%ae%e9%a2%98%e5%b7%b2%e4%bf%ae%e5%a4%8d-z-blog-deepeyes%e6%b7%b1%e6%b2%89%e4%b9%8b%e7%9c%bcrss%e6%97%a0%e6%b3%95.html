@@ -1,0 +1,38 @@
+---
+layout: post
+status: publish
+published: true
+title: 大地天下RSS无法访问问题已修复 Z-Blog Deepeyes深沉之眼RSS无法订阅解决方法
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+excerpt: '<p>不知道从什么时候开始（当然最近才发现），大地天下的RSS无法访问了，即首页的RSS链接不正常。<br />可惜，这个小BUG遇到的不是菜鸟，而是<span
+  style="color: #ff0000">大地无敌</span>，<br />于是就被<span style="color: #ff0000">大地无敌</span>修复了&hellip;&hellip;</p><p>其它使用Z-Blog深沉之眼主题的用户更新后如果遇到RSS链接出错的问题也可以采用这种方法解决。</p><p>首先，打开源码，发现RSS链接指向奇怪的地址&quot;http://www.gquit.cn/&lt;#TEMPLATE_INCLUDE_CS_RSSURL#&gt;&quot;</p>...
+
+'
+wordpress_id: 203
+wordpress_url: http://www.agrp.info/?p=203
+date: '2009-09-08 23:06:02 +0900'
+date_gmt: '2009-09-08 15:06:02 +0900'
+categories:
+- 中文
+tags:
+- Deepeyes
+- RSS
+- Z-BLOG
+comments: []
+---
+<p>不知道从什么时候开始（当然最近才发现），大地天下的RSS无法访问了，即首页的RSS链接不正常。<br />可惜，这个小BUG遇到的不是菜鸟，而是<span style="color: #ff0000">大地无敌</span>，<br />于是就被<span style="color: #ff0000">大地无敌</span>修复了&hellip;&hellip;</p>
+<p>其它使用Z-Blog深沉之眼主题的用户更新后如果遇到RSS链接出错的问题也可以采用这种方法解决。</p>
+<p>首先，打开源码，发现RSS链接指向奇怪的地址"http://www.gquit.cn/<#TEMPLATE_INCLUDE_CS_RSSURL#>"</p>
+<p>然后大地无敌查阅Z-Blog主题制作帮助手册得知<#TEMPLATE_INCLUDE_XXX#>是引用主题目录下文件名为xxx.asp的文件</p>
+<p>那么问题就好解决了，找到/themes/deepeyes/include/，发现没有cs_rssurl.asp，那么大地无敌断定是升级的过程中文件损失。</p>
+<p>那么大地无敌就添加一个cs_rssurl.asp文件，内容是</p>
+<p><textarea class="code" rows="10" cols="50">http://gquit.agrp.info/rss.xml</textarea>
+<p><#ZC_BLOG_HOST#>为引用根目录，</p>
+<p>OK,完工 欢迎订阅本博客哦</p>
+<p><img src="http://gquit.agrp.info/upload/200909082311395500.JPG" alt="" title="" /></p>

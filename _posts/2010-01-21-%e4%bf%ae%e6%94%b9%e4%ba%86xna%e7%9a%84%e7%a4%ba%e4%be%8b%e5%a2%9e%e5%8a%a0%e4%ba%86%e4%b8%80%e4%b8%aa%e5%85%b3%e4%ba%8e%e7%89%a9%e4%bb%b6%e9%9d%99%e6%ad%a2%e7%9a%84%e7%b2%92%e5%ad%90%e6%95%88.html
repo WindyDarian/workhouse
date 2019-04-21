@@ -1,0 +1,28 @@
+---
+layout: post
+status: publish
+published: true
+title: 修改了XNA的示例,增加了一个关于物件静止的粒子效果
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+excerpt: 'XNA示例中的粒子效果.fx文件只支持在绝对位置上添加粒子<br />但不能使添加的粒子相对于一个移动的物件静止。<br />于是自己修改了ParticleEffect.fx<br
+  />添加了float4x4 World;<br />并且把计算综合矩阵的算法改成了return mul(mul(mul(float4(position, 1),World),
+  View), Projection);<br />于是只需在每次绘出前将World设置成物件的世界矩阵就可以了
+
+'
+wordpress_id: 225
+wordpress_url: http://www.agrp.info/?p=225
+date: '2010-01-21 17:09:06 +0900'
+date_gmt: '2010-01-21 09:09:06 +0900'
+categories:
+- 中文
+tags:
+- 粒子效果
+comments: []
+---
+<p>XNA示例中的粒子效果.fx文件只支持在绝对位置上添加粒子<br />但不能使添加的粒子相对于一个移动的物件静止。<br />于是自己修改了ParticleEffect.fx<br />添加了float4x4 World;<br />并且把计算综合矩阵的算法改成了return mul(mul(mul(float4(position, 1),World), View), Projection);<br />于是只需在每次绘出前将World设置成物件的世界矩阵就可以了</p>

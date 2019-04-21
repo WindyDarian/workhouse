@@ -1,0 +1,31 @@
+---
+layout: post
+status: publish
+published: true
+title: 解决因为google换网址而导致的IE7.IE8.IE9google搜索提供程序连接失效的问题
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+excerpt: '最近帮各种同学报自主招生,忙死了<br /><br />正在策划一个新游戏,但高三毕业前是没有时间和精力做出来了<br /><br />嗯,这是很老的事了..<br
+  />如果在IE7以上的搜索栏中添加搜索提供程序google.cn,那么它的连接是失效的,因为它已经换网址了<br />大地无敌摸索出的解决方法:开始--&gt;运行--&gt;regedit.exe--&gt;编辑-查找www.google.cn--&gt;会找到SearchScopes下的项--&gt;把FaviconURL改为:http://www.google.com.hk/favicon.ico
+  URL改为:http://www.google.com.hk/search?hl=zh-CN&amp;q={searchTerms} (或者hk外的其它不"hx"的google网址?)
+  ...
+
+'
+wordpress_id: 262
+wordpress_url: http://www.agrp.info/?p=262
+date: '2010-12-10 06:43:44 +0900'
+date_gmt: '2010-12-09 22:43:44 +0900'
+categories:
+- 中文
+tags:
+- google
+comments: []
+---
+<div style="margin:10px 0 10px 0;text-align:center">最近帮各种同学报自主招生,忙死了</div>
+<p>正在策划一个新游戏,但高三毕业前是没有时间和精力做出来了</p>
+<p>嗯,这是很老的事了..<br />如果在IE7以上的搜索栏中添加搜索提供程序google.cn,那么它的连接是失效的,因为它已经换网址了<br />大地无敌摸索出的解决方法:开始-->运行-->regedit.exe-->编辑-查找www.google.cn-->会找到SearchScopes下的项-->把FaviconURL改为:http://www.google.com.hk/favicon.ico URL改为:http://www.google.com.hk/search?hl=zh-CN&amp;q={searchTerms} (或者hk外的其它不"hx"的google网址?)</p>

@@ -1,0 +1,147 @@
+---
+layout: post
+status: publish
+published: true
+title: panda3d创建一个避免点到底层按钮的遮罩
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+wordpress_id: 468
+wordpress_url: http://www.agrp.info/?p=468
+date: '2013-08-06 12:40:02 +0900'
+date_gmt: '2013-08-06 04:40:02 +0900'
+categories:
+- 中文
+tags:
+- directGUI
+- mask
+- panda3D
+- python
+- 遮罩
+comments:
+- id: 68
+  author: NoIE
+  
+  author_url: http://panda3d.noie.name
+  date: '2013-08-16 12:00:44 +0900'
+  date_gmt: '2013-08-16 04:00:44 +0900'
+  content: 同样用 Panda3d 的来握一下手。
+- id: 69
+  author: 大地无敌
+  
+  author_url: http://www.agrp.info
+  date: '2013-08-16 21:37:44 +0900'
+  date_gmt: '2013-08-16 13:37:44 +0900'
+  content: |-
+    握手！
+    其实这边才刚刚学用panda3d的说
+---
+<p>编写游戏的时候经常要用到弹出游戏内对话框窗口什么的<br />
+而在弹出窗口时要禁用底层窗口的元素怎么办呢&hellip;&hellip;<br />
+于是大地想到了一个跟HTML类似的方法，在窗口和下面之间加一个全透明遮罩层<br />
+遮罩层用DirectButton就能解决会按到下面的按钮的问题了</p>
+<p>但是新的问题来了，在下面加DirectButton的话因为PGButton的特性会阻断Panda3d的事件<br />
+所以滚轮什么的也不能在弹出窗口用了</p>
+<p>那么&hellip;&hellip;只要让这个遮罩层能够重新发送滚轮和其他鼠标事件就可以了！</p>
+<p>于是</p>
+<pre>
+#-*- coding:utf-8 -*-
+'''
+====================================================================================
+
+   Copyright 2013, 2014 Windy Darian (大地无敌), Studio "Sekai no Kagami" 
+   (世界之镜制作组) of Seven Ocean Game Arts （七海游戏文化社
+   , 北京航空航天大学学生七海游戏文化社） @ http://sogarts.com
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+====================================================================================
+Created on Apr 6, 2013
+dialog mask
+@author: Windy Darian
+'''
+
+from panda3d.core import NodePath,PGButton,MouseButton
+from direct.showbase.DirectObject import DirectObject
+import direct.gui.DirectGuiGlobals as DGG
+from direct.gui.DirectButton import DirectButton
+
+class DialogMask(DirectButton):
+    '''used to generate a full-screen mask to prevent button-clicking below the focused window/dialog
+    Added some tricks to make panda3d mouse events still available
+    '''
+    B1PRESS = PGButton.getPressPrefix() + MouseButton.one().getName() + '-'  
+    B2PRESS = PGButton.getPressPrefix() + MouseButton.two().getName() + '-'  
+    B3PRESS = PGButton.getPressPrefix() + MouseButton.three().getName() + '-'
+    B4PRESS = PGButton.getPressPrefix() + MouseButton.four().getName() + '-'
+    B5PRESS = PGButton.getPressPrefix() + MouseButton.five().getName() + '-'
+    WHEELUP = PGButton.getReleasePrefix() + MouseButton.wheelUp().getName() + '-'
+    WHEELDOWN = PGButton.getReleasePrefix() + MouseButton.wheelDown().getName() + '-'
+    WHEELLEFT = PGButton.getReleasePrefix() + MouseButton.wheelLeft().getName() + '-'
+    WHEELRIGHT = PGButton.getReleasePrefix() + MouseButton.wheelRight().getName() + '-'
+    B1RELEASE = PGButton.getReleasePrefix() + MouseButton.one().getName() + '-'  
+    B2RELEASE = PGButton.getReleasePrefix() + MouseButton.two().getName() + '-'  
+    B3RELEASE = PGButton.getReleasePrefix() + MouseButton.three().getName() + '-'
+    B4RELEASE = PGButton.getReleasePrefix() + MouseButton.four().getName() + '-'
+    B5RELEASE = PGButton.getReleasePrefix() + MouseButton.five().getName() + '-'
+    
+    def __init__(self):
+        DirectButton.__init__(self,parent = aspect2d, frameColor =(1,1,1,0), relief = DGG.FLAT,commandButtons = [])
+        self.accept('window-event', self.windowResize)
+        self.windowResize(None)
+        #trick: make this re-throw mouse events
+        self.bind(self.B1PRESS, self.rethrowEvent,['mouse1'])
+        self.bind(self.B2PRESS, self.rethrowEvent,['mouse2'])
+        self.bind(self.B3PRESS, self.rethrowEvent,['mouse3'])
+        self.bind(self.B4PRESS, self.rethrowEvent,['mouse4'])
+        self.bind(self.B5PRESS, self.rethrowEvent,['mouse5'])
+        
+        self.bind(self.WHEELUP, self.rethrowEvent, ['wheel_up'])
+        self.bind(self.WHEELDOWN, self.rethrowEvent, ['wheel_down'])
+        self.bind(self.WHEELLEFT, self.rethrowEvent, ['wheel_left'])
+        self.bind(self.WHEELRIGHT, self.rethrowEvent, ['wheel_right'])
+        
+        self.bind(self.B1RELEASE, self.rethrowEvent,['mouse1-up'])
+        self.bind(self.B2RELEASE, self.rethrowEvent,['mouse2-up'])
+        self.bind(self.B3RELEASE, self.rethrowEvent,['mouse3-up'])
+        self.bind(self.B4RELEASE, self.rethrowEvent,['mouse4-up'])
+        self.bind(self.B5RELEASE, self.rethrowEvent,['mouse5-up'])
+        
+    def windowResize(self,arg):
+        #Make this mask fill the screen
+        self.reparentTo(aspect2d,sort = self.getSort())
+        aspect = base.getAspectRatio()
+        if aspect > 1:
+            self['frameSize'] = (-aspect,aspect,-1,1)
+        elif aspect: 
+            hh = 1.0/aspect
+            self['frameSize'] = (-1,1,-hh,hh)
+            
+    def setCommandButtons(self, *args, **kwargs):
+        #inherited 
+        pass
+        
+    def rethrowEvent(self,sevent,event):
+        messenger.send(sevent)
+        
+                
+    def destroy(self):
+        self.ignoreAll()
+</pre>
+<p>在自定义窗体中，只要使用这个DialogMask类，在自定义窗体或对话框显示出时执行mask.show()，消失是执行mask.hide()就可以了</p>
+<p>[caption id="attachment_469" align="alignnone" width="625"]<br />
+<a href="http://www.agrp.info/wp-content/uploads/2013/08/daw.jpg"><img src="http://www.agrp.info/wp-content/uploads/2013/08/daw-1024x598.jpg" alt="鼠标能正常点到前面的按钮，但点不到底层的按钮，鼠标滚轮滚动的事件也正常" width="625" height="364" class="size-large wp-image-469" /></a> 鼠标能正常点到前面的按钮，但点不到底层的按钮，鼠标滚轮滚动的事件也正常[/caption]</p>

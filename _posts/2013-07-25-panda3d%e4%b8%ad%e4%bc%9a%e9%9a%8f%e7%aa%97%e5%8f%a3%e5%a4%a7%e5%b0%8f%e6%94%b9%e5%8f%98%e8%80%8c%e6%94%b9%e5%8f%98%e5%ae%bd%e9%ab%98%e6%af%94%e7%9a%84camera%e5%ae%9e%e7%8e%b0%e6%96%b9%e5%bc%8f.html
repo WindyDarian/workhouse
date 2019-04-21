@@ -1,0 +1,64 @@
+---
+layout: post
+status: publish
+published: true
+title: Panda3D中会随窗口大小改变而改变宽高比的Camera实现方式（如何创建一个默认base.cam那样的Camera）
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+wordpress_id: 448
+wordpress_url: http://www.agrp.info/?p=448
+date: '2013-07-25 23:13:53 +0900'
+date_gmt: '2013-07-25 15:13:53 +0900'
+categories:
+- 中文
+tags:
+- Aspect ratio
+- Camera
+- FOV
+- panda3D
+- python
+- task
+comments: []
+---
+<p>panda3d使用base.makeCamera(base.win)创建的Camera并不会随着窗体大小的改变而改变宽高比&hellip;&hellip;于是到底怎样实现这样的Camera呢？<br />
+[省略一万字的口胡]<br />
+于是&hellip;&hellip;这样就可以了&hellip;&hellip;<br />
+在Showbase或者某个自定义的DirectObject中</p>
+<pre>
+from panda3d.core import Camera, Lens
+</pre>
+<p>创建相机时</p>
+<pre>
+self.cam1 = base.makeCamera(base.win)            #生成Camera
+self.lens = PerspectiveLens()                    #普通的透视镜头
+self.lens.setMinFov(50.534016)                   #设置短边的Field of View这时候如果宽高比是16:9的话长边搞好是80度，大地喜欢。
+                                                 #因为有些时候窗体会被拉成高比宽要大的情况所以这里应该设置MinFov而不是默认的宽的FOV
+self.lens.setAspectRatio(base.getAspectRatio())  #根据画面设置宽高比
+
+
+#...其它的一些设置
+
+self.accept('window-event', self._adjustAspectRatio)  #然后，要响应窗体大小改变的事件创建Panda3D的任务(说明文档里没有这个事件啊！好不容易才在panda3d的论坛里发现的说&hellip;&hellip;)
+
+#....嘛
+</pre>
+<p>用于响应事件的方法</p>
+<pre>
+def _adjustAspectRatio(self,arg):
+    if self.camera:
+        self.lens.setAspectRatio(base.getAspectRatio())  #动态改变宽高比
+</pre>
+<p>于是这样自定义camera就成功模仿了默认camera的窗体大小改变而不失真的效果了！XD</p>
+<p>今天做Gal模式场景的管理 本来只想就像标准Gal一样做个2D场景与立绘的<br />
+然后一时兴起在透视Camera实现了&hellip;&hellip;（嗯同时解决了上面的问题）嗯 于是就变成了表面是2D其实是3D（这不蛋疼吗！）<br />
+嘛，既然Panda3D是3D引擎那当然要有除了脑补中的3D战斗外更多地利用它的优点的地方<br />
+于是它变成了很容易混合2D和3D的界面的奇怪的东西了&hellip;&hellip;<br />
+撒花！</p>
+<p><a href="http://www.agrp.info/wp-content/uploads/2013/07/tttt.jpg"><img src="http://www.agrp.info/wp-content/uploads/2013/07/tttt-1024x598.jpg" alt="tttt" width="625" height="364" class="alignnone size-large wp-image-453" /></a></p>
+<p>嘛，另外不要问窝为什么在坑引擎&hellip;&hellip;（望天，不如说第二阶段终于开始了吧</p>
+<p>啊啊啊啊啊啊啊啊啊忘了德叔的坑了！！！！！！！！！！！！！！！！</p>

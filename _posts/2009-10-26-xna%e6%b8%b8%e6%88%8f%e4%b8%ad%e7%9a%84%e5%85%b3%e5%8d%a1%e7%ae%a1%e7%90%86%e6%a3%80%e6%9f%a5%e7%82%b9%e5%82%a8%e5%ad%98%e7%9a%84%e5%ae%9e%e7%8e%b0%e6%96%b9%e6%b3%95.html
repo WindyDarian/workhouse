@@ -1,0 +1,34 @@
+---
+layout: post
+status: publish
+published: true
+title: XNA游戏中的关卡管理检查点储存的实现方法
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+excerpt: "<p>命运艺术中的关卡,是用Stage类来代表的</p><p>游戏进行中,呼叫Update(GameTime gameTime) 时会调用当前Stage的Touch()方法,然后关卡做出反应比如说开启事件等等.</p><p>但是如果一个关卡的所有事件都写在一个继承Stage的类里面的话,这个类就会变得非常臃肿而且不便于管理.</p><p>于是大地无敌创建了StagePart类,Stage类管理当前所有StagePart类</p><p>StagePart用来储存关卡一部分的一系列事件,当然一个Stage可以允许多个StagePart同时更新,共享当前游戏世界的中的单位、障碍物等物件,而且不同的StagePart之间的载人与释放,玩家是感觉不到的</p><p>比如说有一个Stage1包含了5个StagePart:</p><p>StagePart1:训练---&gt;StagePart2:一堆战斗----&gt;StagePart3:漫长的对话和又一堆战斗----&gt;StagePart4:曲折的路程----&gt;StagePart5:BOSS战</p><p>这样的好处是可以将一个关卡分段保存,而且可以更好地完成当前游戏中检查点的功能</p><p>如果在一个StagePart中游戏失败,只需要在Stage中进行场景的初始化,读取上次保存的玩家角色的数据放到最近的关卡部分的初始位置,然后直接初始化这个StagePart（放弃玩家已经通过的StagePart不管）就可以了,这样保存游戏时不用将整个游戏世界的数据全部序列化保存下来,也避免了很多不必要的问题。</p>...\n"
+wordpress_id: 210
+wordpress_url: http://www.agrp.info/?p=210
+date: '2009-10-26 23:03:10 +0900'
+date_gmt: '2009-10-26 15:03:10 +0900'
+categories:
+- 中文
+tags:
+- Art of Destiny
+- 关卡管理
+- 命运艺术
+comments: []
+---
+<p>命运艺术中的关卡,是用Stage类来代表的</p>
+<p>游戏进行中,呼叫Update(GameTime gameTime) 时会调用当前Stage的Touch()方法,然后关卡做出反应比如说开启事件等等.</p>
+<p>但是如果一个关卡的所有事件都写在一个继承Stage的类里面的话,这个类就会变得非常臃肿而且不便于管理.</p>
+<p>于是大地无敌创建了StagePart类,Stage类管理当前所有StagePart类</p>
+<p>StagePart用来储存关卡一部分的一系列事件,当然一个Stage可以允许多个StagePart同时更新,共享当前游戏世界的中的单位、障碍物等物件,而且不同的StagePart之间的载人与释放,玩家是感觉不到的</p>
+<p>比如说有一个Stage1包含了5个StagePart:</p>
+<p>StagePart1:训练--->StagePart2:一堆战斗---->StagePart3:漫长的对话和又一堆战斗---->StagePart4:曲折的路程---->StagePart5:BOSS战</p>
+<p>这样的好处是可以将一个关卡分段保存,而且可以更好地完成当前游戏中检查点的功能</p>
+<p>如果在一个StagePart中游戏失败,只需要在Stage中进行场景的初始化,读取上次保存的玩家角色的数据放到最近的关卡部分的初始位置,然后直接初始化这个StagePart（放弃玩家已经通过的StagePart不管）就可以了,这样保存游戏时不用将整个游戏世界的数据全部序列化保存下来,也避免了很多不必要的问题。</p>

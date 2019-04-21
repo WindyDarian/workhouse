@@ -1,0 +1,45 @@
+---
+layout: post
+status: publish
+published: true
+title: RPG游戏中对话框的简单实现原理
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+excerpt: '额,大地无敌考虑到了命运艺术中由于没有人配音所以战斗紧张来不及看对话的情况,加入了类似RPG游戏的对话框系统~~~<br />就是说~~出现信息以后,按回车键出现下一条信息-_-<br
+  /><br /><img src="http://gquit.agrp.info/upload/2010/5/201005092313240858.jpg" alt=""
+  title="" /><br />简陋的实现图<br /><br />原理是这样的~~~<br />使用一个List装string或自己定义的更高级的文字类来储存文字<br
+  />发生对话时使用List.Add把一条条的对话内容加入!<br />绘出时绘出第[0]项的文字!<br />按下回车后使用List的RemoveAt(0)就可以丢掉第一条信息然后把第二条换上来了<br
+  />...
+
+'
+wordpress_id: 246
+wordpress_url: http://www.agrp.info/?p=246
+date: '2010-05-09 23:09:25 +0900'
+date_gmt: '2010-05-09 15:09:25 +0900'
+categories:
+- 中文
+tags:
+- 对话框
+comments: []
+---
+<p>额,大地无敌考虑到了命运艺术中由于没有人配音所以战斗紧张来不及看对话的情况,加入了类似RPG游戏的对话框系统~~~<br />就是说~~出现信息以后,按回车键出现下一条信息-_-</p>
+<p><img src="http://gquit.agrp.info/upload/2010/5/201005092313240858.jpg" alt="" title="" /><br />简陋的实现图</p>
+<p>原理是这样的~~~<br />使用一个List装string或自己定义的更高级的文字类来储存文字<br />发生对话时使用List.Add把一条条的对话内容加入!<br />绘出时绘出第[0]项的文字!<br />按下回车后使用List的RemoveAt(0)就可以丢掉第一条信息然后把第二条换上来了</p>
+<p>于是对话框类就出现了!这是命运艺术的,供参考原理~~</p>
+<p>    public class GameMessageBox:UI <br />    {<br />        Texture2D blank;<br />        public GameWorld gameWorld;<br />        SpriteBatch spriteBatch;<br />        public Vector2 Size;<br />        public Color Color2 = Color.White;<br />        public Color Color = new Color(Color.Blue, 210);<br />        public bool Visible = false;<br />        public List Text = new List(50);</p>
+<p>        bool prot = false; //额,这是为了防止命运艺术中的一些BUG的出现,不用理会</p>
+<p>        public GameMessageBox(GameWorld gameWorld)<br />        {<br />            this.gameWorld = gameWorld;<br />            blank = gameWorld.game.Content.Load(@"blank"); //有时一个1像素白点图片很有用..<br />            position = new Vector2(50, gameWorld.game.GraphicsDevice.Viewport.Height * 0.67f);<br />            Size = new Vector2(gameWorld.game.GraphicsDevice.Viewport.Width - 100, gameWorld.game.GraphicsDevice.Viewport.Height * 0.25f);</p>
+<p>            spriteBatch = gameWorld.spriteBatch;<br />        }<br />        public void AddText(AODText t)<br />        {<br />            Text.Add(t);<br />        }<br />        public override void Update(GameTime gameTime)<br />        {<br />            if (Visible)<br />            {<br />                if (Text.Count == 0)<br />                {<br />                    Visible = false;<br />                    prot = false;</p>
+<p>                }<br />                else if ((PlayerControl.IsKeyPressed(Keys.Enter) || PlayerControl.IsKeyPressed(Keys.Space)) &amp;&amp; prot) //判断是否按下回车或空格<br />                {</p>
+<p>                    Text.RemoveAt(0); //移除第[0]项!<br />                    prot = false;<br />                }<br />                else<br />                {<br />                    prot = true;<br />                }</p>
+<p>            }</p>
+<p>        }<br />        public override void Draw(GameTime gameTime)<br />        {</p>
+<p>            if (Visible)<br />            {<br />                Rectangle t = GetRectangle();<br />                spriteBatch.Begin();<br />                spriteBatch.Draw(blank,t, Color); //画背景<br />                spriteBatch.Draw(blank, new Rectangle(t.X, t.Y, t.Width, 2), Color2); //画边框<br />                spriteBatch.Draw(blank, new Rectangle(t.X, t.Y, 2, t.Height), Color2); //画边框<br />                spriteBatch.Draw(blank, new Rectangle(t.X, t.Y + t.Height - 2, t.Width, 2), Color2); //画边框<br />                spriteBatch.Draw(blank, new Rectangle(t.X + t.Width - 2, t.Y, 2, t.Height), Color2); //画边框<br />                spriteBatch.End();</p>
+<p>                if (Text.Count >= 1)<br />                {</p>
+<p>                    Text[0].position = position + new Vector2(20, 20);<br />                    Text[0].Draw(gameTime);//画出第[0]项文字<br />                }</p>
+<p>            }<br />        }<br />        Rectangle GetRectangle()<br />        {<br />            return new Rectangle((int)position.X, (int)position.Y, (int)Size.X, (int)Size.Y);<br />        }<br />    }</p>

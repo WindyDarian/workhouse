@@ -1,0 +1,258 @@
+---
+layout: page
+status: publish
+published: true
+title: Portfolio
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+wordpress_id: 755
+wordpress_url: http://windy.moe/?page_id=755
+date: '2014-12-12 18:44:06 +0900'
+date_gmt: '2014-12-12 10:44:06 +0900'
+categories: []
+tags: []
+comments: []
+---
+<h2>Demo Reel</h2>
+<p><iframe src="https://player.vimeo.com/video/155342904" width="840" height="473" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<h2>Links</h2>
+<ul>
+<li><a href="http://windy.moe/wp-content/uploads/2014/12/RuoyuFan_Resume_1.19.2017_online.pdf">Resume</a></li>
+<li><a href="https://github.com/WindyDarian">GitHub</a></li>
+</ul>
+<h2>Portfolio</h2>
+<p>[embed]https://www.youtube.com/watch?v=ZLNDfPxhqdE[/embed]</p>
+<p>[gallery columns="4" ids="1186,1187,1188,1185"]</p>
+<h3>(2016) VFPR - Vulkan Forward Plus Renderer</h3>
+<ul>
+<li>Teammate: <a href="http://xueyin.me">Xueyin Wan</a></li>
+<li>Links: <a href="https://www.youtube.com/watch?v=ZLNDfPxhqdE">Video</a> | <a href="https://github.com/WindyDarian/Vulkan-Forward-Plus-Renderer">Source Code (GitHub)</a></li>
+<li>Implemented:
+<ul>
+<li>Vulkan renderer framework from scratch using C++ 14 with design patterns/idioms like RAII and pImpl</li>
+<li><strong>Forward+ shading</strong> program with depth pre-pass and <strong>tile-based light culling</strong> using <strong>compute shader</strong>, which is ~1000% faster than forward renderer under 200 lights</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<p>[embed]https://www.youtube.com/watch?v=P-mW_0KRsjo[/embed]</p>
+<p>[gallery columns="6" ids="1159,1160,1161,1162,1163,1164"]</p>
+<h3>(2016) WebGL Deferred Renderer</h3>
+<ul>
+<li>Links: <a href="https://windydarian.github.io/Project5-WebGL-Deferred-Shading-with-glTF/">Live Online</a> | <a href="https://www.youtube.com/watch?v=P-mW_0KRsjo">Video</a> | <a href="https://github.com/WindyDarian/Project5-WebGL-Deferred-Shading-with-glTF">Source Code (GitHub)</a></li>
+<li>Course project using WebGL and JavaScript</li>
+<li>Implemented:
+<ul>
+<li>Basic <strong>deferred shading</strong> pipeline</li>
+<li><strong>Bloom</strong> post-processing effect with <strong>two-pass Gaussian blur</strong></li>
+<li><strong>Light proxy</strong>: instead of rendering a scissored full-screen quad for every light, I render <strong>proxy geometry</strong> which covers the part of the screen affected by a light (using spheres for point lights), thus <strong>reducing wasted fragments in lighting pass</strong></li>
+<li>Using <strong>inverted depth test</strong> with <strong>front-face culling</strong> to avoid lighting geometries that are far behind the light, thus further reducing wasted fragments. This method increase render speed for 200 point lights to <strong>177%</strong> compared to regular scissor test optimization</li>
+<li><strong>Optimized g-buffer</strong> from 4<em>vec4 to 2</em>vec4 by compressing normal to two floats, increasing framerate to <strong>167%</strong>, see below for details</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<table style="margin: 0 auto;">
+<tbody>
+<tr>
+<td align="center"><img class="alignnone size-large" src="https://windy.moe/wp-content/uploads/2016/06/preview.gif" alt="GPU path tracer rendering" width="449" height="476" /></td>
+<td align="center"><a href="https://windy.moe/wp-content/uploads/2014/12/preview.png"><img class="alignnone size-full wp-image-1113" src="https://windy.moe/wp-content/uploads/2014/12/preview.png" alt="preview" width="450" height="450" /></a></td>
+</tr>
+<tr>
+<td colspan="2" align="center">[gallery columns="6" ids="1116,1117,1008,1014,1015,1013"]</td>
+</tr>
+<tr>
+<td colspan="2" align="left">(2015, 2016) <strong>CPU Monte Carlo Path Tracer / CUDA GPU Path Tracer</strong></td>
+</tr>
+<tr>
+<td colspan="2" align="left">The two path tracers are two of my school projects I am proud of.<br />
+The CPU path tracer was done in 2015 with C++/OpenGL as a course project. It has multiple importance sampling, K-D tree, depth of field and progressive rendering along with physically based rendering.<br />
+The GPU path tracer was done in 2016. It uses CUDA to do the parallel path tracing.</td>
+</tr>
+<tr>
+<td colspan="2" align="left"><a href="https://github.com/WindyDarian/HomeworkPathTracer" target="_blank">CPU Path Tracer Source Code (GitHub, 2015)</a> | <a href="https://github.com/WindyDarian/Project3-CUDA-Path-Tracer" target="_blank">CUDA Path Tracer Source Code (GitHub, 2016)</a></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="margin: 0 auto;">
+<tbody>
+<tr>
+<td align="center">[embed]https://www.youtube.com/watch?v=lsZNX70xJhs[/embed]</td>
+</tr>
+<tr>
+<td align="left">(2016) <strong>AR PaintBall</strong></td>
+</tr>
+<tr>
+<td align="left">An AR assignment basecode/demo I created as teaching assistant for CIS568-Game Design Practicum at University of Pennsylvania during Fall 2016 semester. The concept is use the phone as a paint gun and PC screen as canvas. I used Vuforia AR plugin and Photon networking plugin with Unity, and combined inputs from camera and gyroscope.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.youtube.com/watch?v=XzfaSqfvruI" target="_blank">Video</a></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p><iframe src="https://player.vimeo.com/video/166895755" width="824" height="464" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<p>[gallery columns="4" ids="1072,1073,1074,1075"]</p>
+<h3>(2016) Siren's Aria (VR Game)</h3>
+<blockquote><p>
+  An 1v1 online multiplayer VR game prototype developed with Unreal Engine, Oculus Rift, and Leap Motion. It allows players use hand motion to control the ship.
+</p></blockquote>
+<ul>
+<li>Links: <a href="https://github.com/WindyDarian/SirensAria">Source Code (GitHub)</a> | <a href="https://www.youtube.com/watch?v=zQDlkTYGc8A">Video</a> | <a href="https://vimeo.com/166895755">Video 2 ("Trailer")</a> | <a href="https://vimeo.com/166895627">Video 3 (Gameplay)</a></li>
+<li>Work done:
+<ul>
+<li>Implemented core gameplay, control of the ship, online multiplayer support with Blueprint and C++ in Unreal Engine</li>
+<li>Designed the gameplay where the player uses hand motion to control a ship to navigate the sea and fight the other ship </li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<table style="margin: 0 auto;">
+<tbody>
+<tr>
+<td align="center">[gallery ids="1068,1069,1070"]</td>
+</tr>
+<tr>
+<td align="left">(2016) <strong>EasyDress (Maya Plugin)</strong></td>
+</tr>
+<tr>
+<td align="left">EasyDress is a Maya plugin which is implemented by me and Yimeng Xu based on SigGraph 2015 paper "SecondSkin: Sketch-based Construction of Layered 3D Models", which allows user to draw sketch strokes on viewport and project automatically as layered 3D shapes. This tool is ideal for rapid concept modeling of clothing and armor.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/WindyDarian/EasyDress" target="_blank">Source Code (GitHub)</a> | <a href="https://youtu.be/E5Jv_M_PxtQ" target="_blank">Video</a></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>[embed]https://www.youtube.com/watch?v=xo7S7od-mmE[/embed]</p>
+<p>[gallery columns="4" ids="1046,1047,1048,1049,1050,1037,1034,938"]</p>
+<h3>(2016) DragonHunt (Game)</h3>
+<blockquote><p>
+  An asymmetric 1v1 online multiplayer game prototype with Unreal Engine, where one player plays an RTS as an army while the other player plays a flight simulation as a dragon.
+</p></blockquote>
+<ul>
+<li>Links: <a href="https://github.com/WindyDarian/DragonHunt">Source Code (GitHub)</a> | <a href="https://www.youtube.com/watch?v=xo7S7od-mmE">Video</a></li>
+<li>Work done:
+<ul>
+<li>Implemented the core gameplay and online multiplayer support with Blueprint and C++ in Unreal Engine</li>
+<li>Designed the game with the idea of asymmetric gameplay, where players experience different types of games</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>(2014) Plask: <a href="https://github.com/WindyDarian/Plask">GitHub</a><br />
+An online questionnaire system using Python and Flask. Rapidly developed in two weeks for Software Engineering Practicum summer class following the practice of agile software development. Team work with Junyi Du, Harry Ji, Jiangcheng Li, Marco Wong, Siyu Yang.</li>
+</ul>
+<p>&nbsp;</p>
+<table style="margin: 0 auto;">
+<tbody>
+<tr>
+<td align="center">[gallery columns="4" link="file" ids="1136,1134,1135,1133"]</td>
+</tr>
+<tr>
+<td align="center">[embed]https://www.youtube.com/watch?v=S7FrOMWSA_g[/embed]</td>
+</tr>
+<tr>
+<td align="left">(2014) <strong>Count Sheep!</strong></td>
+</tr>
+<tr>
+<td align="left">My first <strong>Mobile</strong> (Android) Game at 2014. One of the most boring games in the world! (Screenshots and Video are taken 2016)<br />
+Made with MonoGame and Xamarin using C#. The game is on Google Play, with achievements and leaderboard integrated.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://play.google.com/store/apps/details?id=com.windydarian.countsheep" target="_blank">Google Play</a> | <a href="https://www.youtube.com/watch?v=S7FrOMWSA_g" target="_blank">Video</a></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="margin: 0 auto;">
+<tbody>
+<tr>
+<td align="center">[gallery ids="804,803,802"]</td>
+</tr>
+<tr>
+<td align="left">(2013) <strong>Sogal</strong></td>
+</tr>
+<tr>
+<td align="left">SOGAL(Seven Ocean Galgame Engine) is a visual novel framework created with Panda3d, written in Python.<br />
+I am still updating, but on a private repo (along with my new game - a visual novel game plus scroll action and role-playing), so this is a very old version and has many flaws.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/WindyDarian/Sogal" target="_blank">Source Code(GitHub)</a> | <a href="http://youtu.be/5c8TowKs4Oc" target="_blank">Video</a></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="margin: 0 auto;">
+<tbody>
+<tr>
+<td align="center">[gallery ids="799,800,801"]</td>
+</tr>
+<tr>
+<td align="left">(2012) <strong>Unreal Museum</strong></td>
+</tr>
+<tr>
+<td align="left">This is a demo of virtual reality I created with <a href="https://github.com/lijiancheng0614" target="_blank">lijiancheng0614</a> in May 2012<br />
+It uses a Kinect to detect the position of human head, and apply a calculated matrix between the view matrix and the projection matrix (or, alter the projection matrix) of a 3-D scene.<br />
+Thus creates a illusion of reality for the screen no longer appears as an 2-D plane when you see the screen from different directions.</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://github.com/WindyDarian/Unreal-Museum" target="_blank">Source Code(GitHub)</a> | <a href="http://youtu.be/_SepwPwbM_4" target="_blank">Video</a></p>
+<p>&nbsp;</p>
+<table style="margin: 0 auto;">
+<tbody>
+<tr>
+<td align="center">[gallery ids="786,785,787"]</td>
+</tr>
+<tr>
+<td align="left">(2012) <strong>Ocean Scream (Game)</strong></td>
+</tr>
+<tr>
+<td align="left">A game with the background of pirate era in which players write a script to control a fleet to battle against another script-controlled fleet. The game is used as the platform for entrance competition for Microsoft China&rsquo;s &ldquo;Beauty of Programming 2012&rdquo; Coding Competition.<br />
+This was a teamwork, I designed the rule and coded for the game part while, for example, the lijiancheng0614 took care of the AI API and connection part. The artwork was from our MSTC (Microsoft Student Technology Club).</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/WindyDarian/Ocean-Scream" target="_blank">Source Code(GitHub)</a> | <a href="http://1drv.ms/1zj1UiP" target="_blank">Download</a> | <a href="http://youtu.be/iDznw-uG1Xw" target="_blank">Video</a></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="margin: 0 auto;">
+<tbody>
+<tr>
+<td align="center">[gallery ids="766,765,763,767,768,764"]</td>
+</tr>
+<tr>
+<td align="left">(2010) <strong>Art of Destiny (Game)</strong></td>
+</tr>
+<tr>
+<td align="left">A 3-d space shooting game created with C# and XNA. Originally created in 2009-2010 when I was at high school, I did it alone. Translated to English in Dec 2014.<br />
+It also has an expansion - <a title="Stars Fade" href="http://windy.moe/2012/05/27/sf/" target="_blank">Stars Fade</a>, which is used to take part in Microsoft Imagine Cup 2012, but I am not putting that to the portfolio because I think it is not good and likely an unfinished one. - But I still owe my thanks to these worked with me.</p>
+<p>The first complete game I&rsquo;ve made. It features 1.5-3 hours of gameplay.</p>
+</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/WindyDarian/Art-of-Destiny" target="_blank">Source Code(GitHub)</a> | <a href="http://1drv.ms/1v4Cu0Y" target="_blank">Engish Version</a> | <a href="http://1drv.ms/1BLVU2P" target="_blank">Original Version(2010, Chinese)</a> | <a href="http://youtu.be/HyYPuLrNoaE" target="_blank">Video</a></td>
+</tr>
+</tbody>
+</table>
+<p>These are what I feel a bit confident about</p>
+<p>More at:</p>
+<ul>
+<li>Code:</li>
+<li><a href="https://github.com/WindyDarian">Windy Darian at GitHub</a></li>
+<li>Illustrations:</li>
+<li><a href="http://windydarian.deviantart.com">Windy Darian at DeviantArt</a></li>
+<li><a href="http://www.pixiv.net/member.php?id=3842336">Windy Darian at Pixiv</a></li>
+<li>Windy Darian's Workhouse:</li>
+<li><a href="/index.php/category/creations/">Creations</a></li>
+<li><a href="http://windy.moe/aboutme/">About me</a></li>
+</ul>

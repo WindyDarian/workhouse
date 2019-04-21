@@ -1,0 +1,140 @@
+---
+layout: post
+status: publish
+published: true
+title: python中用exec执行脚本命令的变量可访问性 (python3.3)
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+wordpress_id: 439
+wordpress_url: http://www.agrp.info/?p=439
+date: '2013-06-28 15:10:35 +0900'
+date_gmt: '2013-06-28 07:10:35 +0900'
+categories:
+- 中文
+tags:
+- exec
+- getattr
+- panda3D
+- python
+- 引擎
+- 脚本
+comments: []
+---
+<p>在python中写游戏引擎的时候经常会用到exec执行脚本命令和getattr动态调用函数<br />
+但是&hellip;&hellip;使用exec执行脚本命令时，exec对外界变量的可访问性如何？外界对exec中的变量的可访问性又如何？</p>
+<p>经过本大地一个简单的小测试后，大概结论如下<br />
+结论1：exec在最外层时后续的代码可以访问其中声明的变量，可以调用外部的函数<br />
+结论2：exec在最外层时在其中对变量进行的修改对外部有效<br />
+结论3：在函数中使用exec，对于简单的数据类型使用了值传递的方式，即exec中进行声名和修改对外部无效；但是全局变量的声明和修改是有效的；其定义的变量能被后面的exec访问但不能被本身的函数体访问<br />
+结论4：在类成员函数中exec可以定义、访问和修改类的成员；但是其中定义的普通变量只能被后面的exec访问（喵的好神奇！）<br />
+结论5：exec在最外层时后续的代码可以访问其中声明的函数和类</p>
+<p>然后以下是测试过程<br />
+<code></code></p>
+<div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small"># -*- coding:utf-8 -*-</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'''</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">Created on Jun 28, 2013</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">python中用exec执行脚本命令的变量可访问性的小测试 (python3.3)</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">@author: 大地无敌 - http://www.agrp.info</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'''</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#1、在最外层执行exec声明变量</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'test = 'miao''</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">print</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="font-family: Consolas;font-size: xx-small">test</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出miao</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#结论1：exec在最外层时后续的代码可以访问其中声明的变量，可以调用外部的函数</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#2、普通修改和函数调用的测试</span></div>
+<div align="left"><span style="color: #0000ff;font-family: Consolas;font-size: xx-small">def</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;plus</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">(</span>&nbsp;<span style="font-family: Consolas;font-size: xx-small">mm</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">):</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;font-family: Consolas;font-size: xx-small">return</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;mm&nbsp;</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">+</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'World!'</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">k&nbsp;</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">=</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'Hello '</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'k = plus(k)'</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">print</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="font-family: Consolas;font-size: xx-small">k</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出Hello World!</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#结论2：exec在最外层时在其中对变量进行的修改对外部有效</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#3、在函数中使用exec</span></div>
+<div align="left"><span style="color: #0000ff;font-family: Consolas;font-size: xx-small">def</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;main</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">():</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp; test2&nbsp;</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">=</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;1</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp; exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'test2 = test2+233nabc=3nprint(test2)'</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出的是234</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp; exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'print(test2)'</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出的是1</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp; exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'global test3ntest3 = test2'</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp; exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'test4 = 'How about this?''</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出How about this?</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp; exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'print(test4)'</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp; print</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="font-family: Consolas;font-size: xx-small">test2</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#1而不是2，说明在函数中用exe没有改变函数中的变量</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp; print</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="font-family: Consolas;font-size: xx-small">test3</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出的是1</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#print(test4) #会认为test4未定义</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">main</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;()</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#print(test2) #会认为test2未定义，说明在函数中用exec访问的不是模块中的变量</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">print</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="font-family: Consolas;font-size: xx-small">test3</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出的是1</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#结论3：在函数中使用exec，对于简单的数据类型使用了值传递的方式，即exec中进行声名和修改对外部无效；但是全局变量的声明和修改是有效的；其定义的变量能被后面的exec访问但不能被本身的函数体访问</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#4、类（构造）函数中的测试</span></div>
+<div align="left"><span style="color: #0000ff;font-family: Consolas;font-size: xx-small">class</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;Test2</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">:</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;font-family: Consolas;font-size: xx-small">def</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;__init__</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="font-family: Consolas;font-size: xx-small">self</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;):</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exec</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">&nbsp;"self.age = 20"</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exec</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">&nbsp;"abc = 65535"</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exec</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">&nbsp;"print(abc)"</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span>&nbsp;<span style="color: #008000;font-family: Consolas;font-size: xx-small">#65535</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#print(abc)&nbsp; #会认为abc未定义</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">test2&nbsp;</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">=</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;Test2</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;()</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">print</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="font-family: Consolas;font-size: xx-small">test2</span><span style="color: #0000ff;font-family: Consolas;font-size: xx-small">&nbsp;.</span><span style="font-family: Consolas;font-size: xx-small">age</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;)</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出的是20</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#print(abc) #会认为abc未定义</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#exec("print(abc)") #会认为abc未定义</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#结论4：在类成员函数中exec可以定义、访问和修改类的成员；但是其中定义的普通变量只能被后面的exec访问（喵的好神奇！）</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#5、在exec中定义函数和类</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'def test():n&nbsp;&nbsp;&nbsp; print('hahahaha')n'</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">test</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;()</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#输出hahahaha</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">exec</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'class MyObject():n&nbsp;&nbsp;&nbsp; def __init__(self):n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print('OKOK!')n&nbsp;&nbsp;&nbsp; def test(self):n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print('Hello')'</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;)</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">myObject&nbsp;</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">=</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;MyObject</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;()</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#OKOK</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">myObject</span><span style="color: #0000ff;font-family: Consolas;font-size: xx-small">&nbsp;.</span><span style="font-family: Consolas;font-size: xx-small">test</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;()</span><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span><span style="color: #008000;font-family: Consolas;font-size: xx-small">#Hello</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="color: #008000;font-family: Consolas;font-size: xx-small">#结论5：exec在最外层时后续的代码可以访问其中声明的函数和类</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">&nbsp;</span></div>
+<div align="left"><span style="font-family: Consolas;font-size: xx-small">input</span><span style="color: #008080;font-family: Consolas;font-size: xx-small">&nbsp;(</span><span style="color: #a31515;font-family: Consolas;font-size: xx-small">"nya!"</span>&nbsp;<span style="color: #008080;font-family: Consolas;font-size: xx-small">)</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'''</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">在会出现异常的代码都注释掉后的最终输出如下：</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">miao</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">Hello World!</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">234</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">1</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">How about this?</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">1</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">1</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">1</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">65535</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">20</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">hahahaha</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">OKOK!</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">Hello</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">nya!</span></div>
+<div align="left"><span style="color: #a31515;font-family: Consolas;font-size: xx-small">'''</span></div>
+</div>
+<p>&nbsp;</p>
+<p><strong><span style="color: #ff6600">注意 在Python2.7 中 结果是</span></strong></p>
+<p><strong><span style="color: #ff6600">miao</span></strong><br />
+<strong><span style="color: #ff6600"> Hello World!</span></strong><br />
+<strong><span style="color: #ff6600"> 234</span></strong><br />
+<strong><span style="color: #ff6600"> 234</span></strong><br />
+<strong><span style="color: #ff6600"> How about this?</span></strong><br />
+<strong><span style="color: #ff6600"> 234</span></strong><br />
+<strong><span style="color: #ff6600"> 234</span></strong><br />
+<strong><span style="color: #ff6600"> 234</span></strong><br />
+<strong><span style="color: #ff6600"> 65535</span></strong><br />
+<strong><span style="color: #ff6600"> 20</span></strong><br />
+<strong><span style="color: #ff6600"> hahahaha</span></strong><br />
+<strong><span style="color: #ff6600"> OKOK!</span></strong><br />
+<strong><span style="color: #ff6600"> Hello</span></strong><br />
+<strong><span style="color: #ff6600"> nya!</span></strong></p>
+<p><strong><span style="color: #ff6600">也就是说在函数中使用exec对简单变量进行的声明和修改在python2.7中会反映到外界</span></strong></p>

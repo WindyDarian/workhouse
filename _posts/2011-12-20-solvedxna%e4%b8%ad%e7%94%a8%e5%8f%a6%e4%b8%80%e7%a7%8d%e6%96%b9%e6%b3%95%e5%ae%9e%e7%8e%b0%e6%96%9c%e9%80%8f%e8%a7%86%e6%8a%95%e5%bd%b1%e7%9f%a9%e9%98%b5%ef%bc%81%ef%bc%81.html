@@ -1,0 +1,43 @@
+---
+layout: post
+status: publish
+published: true
+title: Solved!!XNA中用另一种方法实现斜透视投影矩阵！！
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+wordpress_id: 114
+wordpress_url: http://www.agrp.info/?p=114
+date: '2011-12-20 14:18:49 +0900'
+date_gmt: '2011-12-20 06:18:49 +0900'
+categories:
+- 中文
+tags: []
+comments:
+- id: 57
+  author: 大地无敌
+  
+  author_url: http://www.agrp.info
+  date: '2011-12-20 23:42:59 +0900'
+  date_gmt: '2011-12-20 15:42:59 +0900'
+  content: T_T经过前辈的指示大地无敌才察觉到Matrix.CreatePerspectiveOffCenter的存在&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;
+---
+<p><a href="http://creativecommons.org/licenses/by-nc/2.5/cn/" rel="license"><img style="border-width: 0" src="http://i.creativecommons.org/l/by-nc/2.5/cn/88x31.png" alt="Creative Commons License" /></a></p>
+<p>首先，大地无敌和B成所参加的微软精英大挑战的项目的一个实现需要斜方向的透视投影，否则无法实现预期的效果。</p>
+<p>对于斜方向的透视投影，大地无敌给个图片可以说明它</p>
+<p><a href="http://www.agrp.info/wp-content/uploads/2011/12/wbt.jpg"><img src="http://www.agrp.info/wp-content/uploads/2011/12/wbt-300x130.jpg" alt="" title="wbt" width="300" height="130" class="alignnone size-medium wp-image-118" /></a></p>
+<p>众所周知，一个3D物件的现实需要经过世界矩阵、观察矩阵和投影矩阵的转换，再经过裁剪等一系列的处理才能转换为屏幕坐标。投影矩阵则是将观察矩阵得到的关于相机空间的顶点转化为一个正方体内的坐标。而XNA默认的方法仅提供了正的透视投影矩阵。于是大地无敌就纠结在如何算出一个斜的投影矩阵上很久很久&hellip;&hellip;</p>
+<p>然后，今天大地无敌突然想通了&hellip;&hellip;为什么一定要对投影矩阵开刀呢？如果在观察矩阵和投影矩阵之间加一个新的矩阵就能解决问题了！！！</p>
+<p>经过观察矩阵转化后，空间的顶点坐标则变为相对相机的坐标，正前方、上方、右边是-z轴、y轴、x轴，所以，要实现斜投影，只需要将每个与xy平面平行的平面上的所有点进行一些平移，以观察方向为中心的点的x、y平移到以-z轴为中心就解决问题了，就像这样！！！</p>
+<p> <a href="http://www.agrp.info/wp-content/uploads/2011/12/wbt2.png"><img src="http://www.agrp.info/wp-content/uploads/2011/12/wbt2-300x184.png" alt="" title="wbt2" width="300" height="184" class="alignnone size-medium wp-image-119" /></a></p>
+<p>红色表示原位置和真实观察方向，黑色表示负z轴和变化后的位置，蓝色表示。额&hellip;&hellip;虽然图难懂，总之呢&hellip;&hellip;</p>
+<p>令观察方向的单位向量为direction、观察方向与负z轴的夹角为a。不难得出每个对应点的坐标应该有如下的对应关系。</p>
+<p>Vector3 pos = pos0 + ((-pos0.Z)*Vector3.Forward-(-pos0.Z)/(float)Math.Cos(a) * direction);</p>
+<p>所以矩阵的关系就应该是。</p>
+<p> <a href="http://www.agrp.info/wp-content/uploads/2011/12/jz.jpg"><img src="http://www.agrp.info/wp-content/uploads/2011/12/jz-300x120.jpg" alt="" title="jz" width="300" height="120" class="alignnone size-medium wp-image-120" /></a></p>
+<p>所以！！！在通过XNA内置方法创建的观察矩阵和投影矩阵之间再乘上一个如下矩阵就能解决问题了！！！<br />
+<a href="http://www.agrp.info/wp-content/uploads/2011/12/jz2.png"><img src="http://www.agrp.info/wp-content/uploads/2011/12/jz2-300x187.png" alt="" title="jz2" width="300" height="187" class="alignnone size-medium wp-image-121" /></a></p>

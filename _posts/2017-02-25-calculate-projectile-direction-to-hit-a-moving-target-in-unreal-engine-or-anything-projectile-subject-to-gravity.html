@@ -1,0 +1,103 @@
+---
+layout: post
+status: publish
+published: true
+title: Calculate Projectile Direction to Hit a Moving Target in Unreal Engine or Anything
+  (Projectile Subject to Gravity)
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+wordpress_id: 1245
+wordpress_url: http://windy.moe/?p=1245
+date: '2017-02-25 18:42:51 +0900'
+date_gmt: '2017-02-25 18:42:51 +0900'
+categories:
+- English
+tags: []
+comments: []
+---
+<p>In one of the prototypes I am working on recently, there are some enemy archers and I need them to be able to hit the player's character in movement. That is, knowing <strong>location</strong> and <strong>velocity of the target</strong>, the <strong>enemy archer's location</strong> and the <strong>speed of the arrow</strong>, I need to calculate a <strong>direction</strong>, or velocity for the archer to shoot the arrow. My assumption is that the arrow will subject to and only to <strong>gravity</strong>, while considering the <strong>velocity</strong> of the target when the projectile is launched. My code is an iterative method inspired by <a href="http://www.gamasutra.com/blogs/KainShin/20090515/83954/Predictive_Aim_Mathematics_for_AI_Targeting.php">this post from Kain Shin</a> for C++ in Unreal Engine, but I it can be easily adapted to another platform. Adding acceleration, although I haven't tried, should also work somehow using my method.</p>
+<p><a href="https://wiki.unrealengine.com/AI_aiming_for_the_lazy">This post</a> used KINSOL library to solve the problem, but it would eliminate the cross-platform potential of my game. The third method in <a href="http://www.gamasutra.com/blogs/KainShin/20090515/83954/Predictive_Aim_Mathematics_for_AI_Targeting.php">this post</a> doesn't work well if the upward/downward angle is very large. Considering the fact I already have a function working for non-moving targets, I decide to adapt from the second method in <a href="http://www.gamasutra.com/blogs/KainShin/20090515/83954/Predictive_Aim_Mathematics_for_AI_Targeting.php">this post</a>, which is an iterative way.</p>
+<h2>Simplified case: assuming target does not move</h2>
+<p>It is easy to solve the equation if the target is not moving. I already had some <a href="https://github.com/WindyDarian/DragonHunt/blob/master/Source/DragonHunt/DragonHuntHelperLibrary.cpp">code</a> already working in <a href="https://github.com/WindyDarian/DragonHunt">DragonHunt</a> (Thanks to Menglu!) to calculate direction to launch projectile, but it didn't take the movement of the target into consideration. (That is, the AI in the game needs to be smarter than that in DragonHunt XD)&hellip; Also, there is a function named SuggestProjectileVelocity in Unreal Engine that does exactly the same thing (<a href="https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/Kismet/UGameplayStatics/SuggestProjectileVelocity/index.html">C++</a>, <a href="https://docs.unrealengine.com/latest/INT/BlueprintAPI/Game/Components/ProjectileMovement/SuggestProjectileVelocity/index.html">Blueprint</a>)</p>
+<p>I have shooter's position <strong>Po</strong>, position of the target <strong>Pt</strong>, gravity <strong>G</strong>. I have a downward axis in the direction of <strong>G</strong>:</p>
+<p><strong>Iy</strong> = normalized(<strong>G</strong>)</p>
+<p>And I can calculate a front axis, and the direction of which is</p>
+<p><strong>Ix</strong> = normalized(cross(<strong>G</strong>, cross(<strong>Pt-Po</strong>, <strong>G</strong>))).</p>
+<p>Not that it is possible the target is directly above or below the shooter, and we need to consider the special case - but I'll assume that's not happening for now.</p>
+<p>And we can now do the whole calculation in the 2D space. I have target's relative position in <strong>Ix</strong> and <strong>Iy</strong> as</p>
+<p>Px = dot(<strong>Ix</strong>, <strong>Pt-Po</strong>)<br />
+Py = dot(<strong>Iy</strong>, <strong>Pt-Po</strong>)<br />
+g = |<strong>G</strong>|</p>
+<p>And what we need is to solve for the desired initial velocity of projectile in the space of <strong>Ix</strong> and <strong>Iy</strong>: Vx and Vy, in the following system:</p>
+<ul>
+<li>Vx^2 + Vy^2 = s^2 (S is initial speed)</li>
+<li>Vx * t = Px</li>
+<li>Vy * t + g * t^2 / 2 = Py</li>
+<li>Vx > 0</li>
+<li>t > 0</li>
+<li>(And Px, g, s should already be greater than zero if the inputs are correct)</li>
+</ul>
+<p>We can have the following result:</p>
+<p><a href="https://windy.moe/wp-content/uploads/2017/02/sol-1.png"><img src="https://windy.moe/wp-content/uploads/2017/02/sol-1.png" alt="" width="298" height="230" class="alignnone size-full wp-image-1267" /></a></p>
+<p>Finally we can calculate the velocity or direction of projectile we need to shoot in by</p>
+<p><strong>V</strong> = Vx * <strong>Ix</strong> + Vy * <strong>Iy</strong></p>
+<p>Note that there are two possible solutions. I would prefer the visual of higher arc of arrow in my game, so I'll just positive sqrt(Delta) in my case. We can prefer negative sqrt(Delta), to favor a shorter path if there is one.</p>
+<p>If Delta is smaller than zero, the target is too far forward; if the things in the outer sqrt is smaller than zero, the target is too far upward. That's why I prefer my function than Unreal Engine's SuggestProjectileVelocity(), because I can alter the result (in my case Delta to zero if smaller than zero in order to try to shoot as long as the archer could - which just looks good) - and to calculate an "impact time" even if the target is far away, which would be important in the iterative method in order to hit a moving target, which can be initially out of archer's reach but moving towards the archer.</p>
+<h2>Now the target has a velocity</h2>
+<p>If the target at <strong>P0</strong> has a velocity <strong>Vt</strong>, we can call the function we have written above, and to calculate a projectile velocity <strong>V0</strong> and impact time t0. After that, we can get calculate a new position of the target by <strong>P1</strong> = <strong>P0</strong> + <strong>Vt</strong> * t0.</p>
+<p>Then, we use <strong>P1</strong> as the new target position to calculate a new projectile velocity and <strong>V1</strong> and travel time t1, which can be better than <strong>V0</strong> and t0. And we have new arbitrary target position <strong>P2</strong> = <strong>P0</strong> + <strong>Vt</strong> * t1.</p>
+<p>So, iteratively, we can calculate <strong>V[i]</strong> and t[i] from <strong>P[i]</strong> = <strong>P0</strong> + <strong>Vt</strong> * t[i-1] . If target's velocity is not large, it should converge. And after some iterations (in my case 8), the initial velocity and direction of V[i] should hit the target. We can also introduce some interpolation to help convergence:</p>
+<ul>
+<li><strong>P[i]</strong> = <strong>P0</strong> + <strong>Vt</strong> * lerp(t[i-2],t[i-1], alpha) . </li>
+<li><strong>V[i]</strong>, t[i] = projectileVelocityForStaticTargetAt(P[i])</li>
+</ul>
+<p>I used alpha = 0.8 and it reduceed the iterations needed to 5 to get a stable hit in my case.</p>
+<p>And this is the code in Unreal C++ for the iteration:</p>
+<pre>
+FVector UHelperLibrary::CalculateProjectileDirectionForMovingTarget(FVector Target, FVector TargetVelocity, FVector Origin, FVector Gravity, float Speed, bool & bWillHit, float & Time, int Iterations, float EpsilonTime)
+{
+    if (TargetVelocity.IsNearlyZero())
+    {
+        // To hit a static target. You can also use SuggestProjectileVelocity;
+        return CalculateProjectileDirectionHelper(Target, Origin, Gravity, Speed, &bWillHit, &Time); 
+    }
+    
+    FVector PrevDirection;
+    float PrevTime = 0.0f;
+    float NewTime = 0.0f;
+    bool bHit = false;
+    constexpr float Alpha = 0.8f;
+
+    for (auto i = 0; i < Iterations; i++)
+    {
+        PrevTime = FMath::Lerp(PrevTime, NewTime, Alpha);
+        // Or use SuggestProjectileVelocity;
+        PrevDirection = CalculateProjectileDirectionHelper(Target + TargetVelocity * PrevTime, Origin, Gravity, Speed, &bHit, &NewTime);
+        if (NewTime == InfFloat)
+        {
+            bHit = false;
+            break;
+        }
+        if (FMath::IsNearlyEqual(NewTime, PrevTime, EpsilonTime))
+        {
+            break;
+        }
+    }
+
+    Time = NewTime;
+    bWillHit = bHit;
+    return PrevDirection;
+}
+</pre>
+<p>And <a href="https://github.com/WindyDarian/ProjectileAimingHelper/blob/master/HelperLibrary.cpp">here is the full code</a>.</p>
+<h4>References:</h4>
+<ul>
+<li><a href="http://www.gamasutra.com/blogs/KainShin/20090515/83954/Predictive_Aim_Mathematics_for_AI_Targeting.php">http://www.gamasutra.com/blogs/KainShin/20090515/83954/Predictive_Aim_Mathematics_for_AI_Targeting.php</a></li>
+<li><a href="https://wiki.unrealengine.com/AI_aiming_for_the_lazy">https://wiki.unrealengine.com/AI_aiming_for_the_lazy</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Trajectory_of_a_projectile">https://en.wikipedia.org/wiki/Trajectory_of_a_projectile</a></li>
+</ul>

@@ -1,0 +1,76 @@
+---
+layout: post
+status: publish
+published: true
+title: XNA游戏世界的XNA框架中文化工作
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+excerpt: '大地无敌发现<a href="http://xna.omgsoft.com.cn/" target="_blank">XNA游戏世界</a>已经开始了XNA框架的中文化工作，于是也帮了一点点忙。<br
+  />[CODE]<br />因为XNA官方迟迟没有发布中文版，本站将开始XNA3.1版本开发框架的中文化工作。<br /><br />XNA3.1在windows,xbox,zune平台下共有函数(summary)和参数(parameter)英文项目共9199项，这无论对任何一个团队来说都是非常枯燥、繁杂的工作。<br
+  /><br />但是为了做最好的XNA中文社区，有可能为大家提供中文版本的开发框架，就应该推动这个进程，同时也为XNA4.0的中文化的实现提供可能性和前期准备。<br
+  />...
+
+'
+wordpress_id: 232
+wordpress_url: http://www.agrp.info/?p=232
+date: '2010-02-05 23:17:51 +0900'
+date_gmt: '2010-02-05 15:17:51 +0900'
+categories:
+- 中文
+tags: []
+comments: []
+---
+<p>大地无敌发现<a href="http://xna.omgsoft.com.cn/" target="_blank">XNA游戏世界</a>已经开始了XNA框架的中文化工作，于是也帮了一点点忙。<br /><textarea class="code" rows="10" cols="50"><br />
+因为XNA官方迟迟没有发布中文版，本站将开始XNA3.1版本开发框架的中文化工作。</p>
+<p>XNA3.1在windows,xbox,zune平台下共有函数(summary)和参数(parameter)英文项目共9199项，这无论对任何一个团队来说都是非常枯燥、繁杂的工作。</p>
+<p>但是为了做最好的XNA中文社区，有可能为大家提供中文版本的开发框架，就应该推动这个进程，同时也为XNA4.0的中文化的实现提供可能性和前期准备。</p>
+<p>XNA3.1的函数说明存储在X:Program&nbsp;FilesMicrosoft&nbsp;XNAXNA&nbsp;Game&nbsp;Studiov3.1References目录下，按平台分为windows,xbox,zune三个目录中的Microsoft.Xna.Framework.xml等文件中，实验证明修改其中的特定内容即可实现智能提示的中文版。本站将其所有英文内容导入数据库中，大家可以在网页中进行翻译。在将大部分常用函数翻译的基本准确时本站将发布中文版本的xml文件，大家下载后覆盖相应文件，重启Visual&nbsp;Studio即可。</p>
+<p>本站推出的中文化方式采用Wiki模式，您需要登录才有权限修改翻译内容，每次只能修改一条内容，被修改的内容将做为历史记录保留。该部分功能还在开发中，大家在使用中可以提出建议。</p>
+<p>该项目只能实现XNA开发时智能提示的中文化，异常提示部分的英文汉化并不在其中。XNAZERO已经论证了异常提示的汉化可行性，我们也在抓紧时间研究解决方案。</p>
+<p>具体使用方法：</p>
+<p>1:http://xna.omgsoft.com.cn/Wiki/Search.aspx中输入函数名，查找我们用过的XNA类库函数，如：SpriteBatch.Draw；</p>
+<p>2:点击查找到的Draw函数http://xna.omgsoft.com.cn/Wiki/List.aspx?id=1991，可以看到它的七个重载函数以及每个函数的参数说明；</p>
+<p>3:点击其中函数说明或是参数说明后面的&ldquo;修改&rdquo;，进入到具体项目的修改页面；</p>
+<p>4:在修改页面进行修改内容，填写修改原因；</p>
+<p>5:在重载函数页面点击后面的&ldquo;历史&rdquo;，查看具体项目的修改历史。<br />
+</textarea></p>
+<p>这是大地无敌帮忙翻译的部分</p>
+<p><textarea class="code" rows="10" cols="50"></p>
+<p>说明&nbsp;&nbsp;平台&nbsp;&nbsp;重载&nbsp;&nbsp;描述&nbsp;&nbsp;操作&nbsp;&nbsp;<br />
+Method<br />
+方法&nbsp;&nbsp;&nbsp;Windows<br />
+Xbox<br />
+Zune<br />
+&nbsp;(Microsoft.Xna.Framework.Vector3,<br />
+Microsoft.Xna.Framework.Vector3)&nbsp;&nbsp;原文:Calculates&nbsp;the&nbsp;dot&nbsp;product&nbsp;of&nbsp;two&nbsp;vectors.&nbsp;If&nbsp;the&nbsp;two&nbsp;vectors&nbsp;are&nbsp;unit&nbsp;vectors,&nbsp;the&nbsp;dot&nbsp;product&nbsp;returns&nbsp;a&nbsp;floating&nbsp;point&nbsp;value&nbsp;between&nbsp;-1&nbsp;and&nbsp;1&nbsp;that&nbsp;can&nbsp;be&nbsp;used&nbsp;to&nbsp;determine&nbsp;some&nbsp;properties&nbsp;of&nbsp;the&nbsp;angle&nbsp;between&nbsp;two&nbsp;vectors.&nbsp;For&nbsp;example,&nbsp;it&nbsp;can&nbsp;show&nbsp;whether&nbsp;the&nbsp;vectors&nbsp;are&nbsp;orthogonal,&nbsp;parallel,&nbsp;or&nbsp;have&nbsp;an&nbsp;acute&nbsp;or&nbsp;obtuse&nbsp;angle&nbsp;between&nbsp;them.&nbsp;<br />
+中文:计算两个向量的内积。如果这两个向量是单位向量，结果返回一个在-1和1之间的浮点值，能够决定这两个向量的夹角的一些特性（注：其实就是两个向量夹角的余弦值）。例如，它能够表示这两个向量是否垂直、平行，或这两个向量成锐角还是钝角。&nbsp;&nbsp;修改&nbsp;</p>
+<p>历史&nbsp;&nbsp;<br />
+&nbsp;&nbsp;参数1:vector1&nbsp;&nbsp;原文:Source&nbsp;vector.&nbsp;<br />
+中文:源向量&nbsp;&nbsp;修改&nbsp;</p>
+<p>历史&nbsp;&nbsp;<br />
+&nbsp;&nbsp;参数2:vector2&nbsp;&nbsp;原文:Source&nbsp;vector.&nbsp;<br />
+中文:源向量&nbsp;&nbsp;修改&nbsp;</p>
+<p>历史&nbsp;&nbsp;<br />
+Method<br />
+方法&nbsp;&nbsp;&nbsp;Windows<br />
+Xbox<br />
+Zune<br />
+&nbsp;(Microsoft.Xna.Framework.Vector3@,<br />
+Microsoft.Xna.Framework.Vector3@,<br />
+System.Single@)&nbsp;&nbsp;原文:Calculates&nbsp;the&nbsp;dot&nbsp;product&nbsp;of&nbsp;two&nbsp;vectors&nbsp;and&nbsp;writes&nbsp;the&nbsp;result&nbsp;to&nbsp;a&nbsp;user-specified&nbsp;variable.&nbsp;If&nbsp;the&nbsp;two&nbsp;vectors&nbsp;are&nbsp;unit&nbsp;vectors,&nbsp;the&nbsp;dot&nbsp;product&nbsp;returns&nbsp;a&nbsp;floating&nbsp;point&nbsp;value&nbsp;between&nbsp;-1&nbsp;and&nbsp;1&nbsp;that&nbsp;can&nbsp;be&nbsp;used&nbsp;to&nbsp;determine&nbsp;some&nbsp;properties&nbsp;of&nbsp;the&nbsp;angle&nbsp;between&nbsp;two&nbsp;vectors.&nbsp;For&nbsp;example,&nbsp;it&nbsp;can&nbsp;show&nbsp;whether&nbsp;the&nbsp;vectors&nbsp;are&nbsp;orthogonal,&nbsp;parallel,&nbsp;or&nbsp;have&nbsp;an&nbsp;acute&nbsp;or&nbsp;obtuse&nbsp;angle&nbsp;between&nbsp;them.&nbsp;<br />
+中文:计算两个向量的内积。如果这两个向量是单位向量，结果返回一个在-1和1之间的浮点值，能够决定这两个向量的夹角的一些特性（注：其实就是两个向量夹角的余弦值）。例如，它能够表示这两个向量是否垂直、平行，或这两个向量成锐角还是钝角。&nbsp;&nbsp;修改&nbsp;</p>
+<p>历史&nbsp;&nbsp;<br />
+&nbsp;&nbsp;参数1:vector1&nbsp;&nbsp;原文:Source&nbsp;vector.&nbsp;<br />
+中文:源向量&nbsp;&nbsp;修改&nbsp;</p>
+<p>历史&nbsp;&nbsp;<br />
+&nbsp;&nbsp;参数2:vector2&nbsp;&nbsp;原文:Source&nbsp;vector.&nbsp;<br />
+中文:源向量&nbsp;&nbsp;修改&nbsp;</p>
+<p>历史&nbsp;&nbsp;<br />
+&nbsp;&nbsp;参数3:result&nbsp;&nbsp;原文:[OutAttribute]&nbsp;The&nbsp;dot&nbsp;product&nbsp;of&nbsp;the&nbsp;two&nbsp;vectors.&nbsp;<br />
+中文:[OutAttribute]向量的内积&nbsp;&nbsp;修改&nbsp;</p>
+<p></textarea><br />如果有兴趣翻译的话你也可以一试哦<a href="http://xna.omgsoft.com.cn/Wiki/Default.aspx" target="_blank">http://xna.omgsoft.com.cn/Wiki/Default.aspx</a></p>

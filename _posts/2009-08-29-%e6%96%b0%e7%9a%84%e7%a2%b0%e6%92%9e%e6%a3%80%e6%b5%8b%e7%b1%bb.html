@@ -1,0 +1,56 @@
+---
+layout: post
+status: publish
+published: true
+title: 新的碰撞检测类..
+author:
+  display_name: windydarian
+  
+  
+  url: ''
+
+
+excerpt: '游戏消耗的CPU资源中,用来做碰撞检测的占大头...<br />以前的方法是,把每个单位的模型的每个Mesh的BoundingSphere直接进行碰撞检测<br
+  />缺点很明显，模型的Mesh多了检测次数就会成几何级增长（两个模型每个模型有1个Mesh只需检测一次，而两个模型每个模型有5个Mesh要检测25次，5个模型每个模型有5个Mesh要检测(4+3+2+1)*25
+  = 250次....）<br />于是大地无敌就把检测的方法改成：先算出覆盖整个单位的BoundingSphere，如果两个单位的BoundingSphere存在碰撞就检测这两个单位所有Mesh的BoundingSphere，这样可以减少同屏单位数多时的运算量<br
+  />...
+
+'
+wordpress_id: 201
+wordpress_url: http://www.agrp.info/?p=201
+date: '2009-08-29 23:13:27 +0900'
+date_gmt: '2009-08-29 15:13:27 +0900'
+categories:
+- 中文
+tags:
+- Art of Destiny
+- 命运艺术
+- 碰撞检测
+comments:
+- id: 26
+  author: 求助
+  
+  author_url: ''
+  date: '2009-09-03 17:36:36 +0900'
+  date_gmt: '2009-09-03 09:36:36 +0900'
+  content: '每次访问你的BLOG，就提示要下在密码管理器，是不是设置一下，这样也太流氓了吧<blockquote><div class="quote quote3"><div
+    class="quote-title">大地无敌 于 2009-9-6 21:07:32 回复</div>不会呀,大地无敌认为这里是很干净的地方绝对没有设置过强制下密码生成器哦,请检查一下浏览器是否正常,以及地址是否为http://www.gquit.cn,或者换个浏览器看看是否还有弹出下载的问题</div></blockquote>
+
+'
+---
+<p>游戏消耗的CPU资源中,用来做碰撞检测的占大头...<br />以前的方法是,把每个单位的模型的每个Mesh的BoundingSphere直接进行碰撞检测<br />缺点很明显，模型的Mesh多了检测次数就会成几何级增长（两个模型每个模型有1个Mesh只需检测一次，而两个模型每个模型有5个Mesh要检测25次，5个模型每个模型有5个Mesh要检测(4+3+2+1)*25 = 250次....）<br />于是大地无敌就把检测的方法改成：先算出覆盖整个单位的BoundingSphere，如果两个单位的BoundingSphere存在碰撞就检测这两个单位所有Mesh的BoundingSphere，这样可以减少同屏单位数多时的运算量<br />取单位和射线做碰撞检测的例子，（其中单位所使用的实际Model为DModel.model）：
+<p class="code"><code>using&nbsp;System;<br />using&nbsp;System.Collections.Generic;<br />using&nbsp;System.Linq;<br />using&nbsp;Microsoft.Xna.Framework;<br />using&nbsp;Microsoft.Xna.Framework.Audio;<br />using&nbsp;Microsoft.Xna.Framework.Content;<br />using&nbsp;Microsoft.Xna.Framework.GamerServices;<br />using&nbsp;Microsoft.Xna.Framework.Graphics;<br />using&nbsp;Microsoft.Xna.Framework.Input;<br />using&nbsp;Microsoft.Xna.Framework.Media;<br />using&nbsp;Microsoft.Xna.Framework.Net;<br />using&nbsp;Microsoft.Xna.Framework.Storage;<br />using&nbsp;AODGameLibrary.Gamehelpers;<br />using&nbsp;AODGameLibrary.Cameras;<br />using&nbsp;AODGameLibrary.Units;<br />using&nbsp;AODGameLibrary.Weapons;<br />using&nbsp;AODGameLibrary.Models;<br />using&nbsp;AODGameLibrary.GamePlay;</p>
+<p>namespace&nbsp;AODGameLibrary.Gamehelpers<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;<br />
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;处理单位的碰撞检测，最近一次是由大地无敌在2009年8月29日进行改良和优化<br />&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;</summary>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;Collision<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;...<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;<br />
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;处理单位和射线的碰撞检测<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;</summary>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;
+<param&nbsp;name="unit"></param>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;
+<param&nbsp;name="ray"></param>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;<returns></returns><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;bool&nbsp;&nbsp;isCollided(Unit&nbsp;unit,&nbsp;Ray&nbsp;ray)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BoundingSphere&nbsp;unitBS&nbsp;=new&nbsp;BoundingSphere();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List<BoundingSphere>&nbsp;bses&nbsp;=&nbsp;new&nbsp;List<BoundingSphere>(0);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(DModel&nbsp;dModel&nbsp;in&nbsp;unit.model.models)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(dModel&nbsp;!=&nbsp;null)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Matrix[]&nbsp;transforms&nbsp;=&nbsp;new&nbsp;Matrix[dModel.model.Bones.Count];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dModel.model.CopyAbsoluteBoneTransformsTo(transforms);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(ModelMesh&nbsp;mesh&nbsp;in&nbsp;dModel.model.Meshes)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BoundingSphere&nbsp;bS&nbsp;=&nbsp;mesh.BoundingSphere.Transform(transforms[mesh.ParentBone.Index]<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;dModel.World);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bses.Add(bS);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(unitBS&nbsp;!=&nbsp;null)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unitBS&nbsp;=&nbsp;BoundingSphere.CreateMerged(unitBS,&nbsp;bS);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;unitBS&nbsp;=&nbsp;bS;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(unitBS.Intersects(ray)&nbsp;!=&nbsp;null)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(BoundingSphere&nbsp;k&nbsp;in&nbsp;bses)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(k&nbsp;!=&nbsp;null)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(k.Intersects(ray)&nbsp;!=&nbsp;null)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;false;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></code></p>
