@@ -1,0 +1,16 @@
+---
+# ==============================================================================
+# Copyright (c) 2019 Windy Darian
+# MIT License
+#
+# Based on main.scss from minima theme. See third_party.txt for original
+# license.
+# ==============================================================================
+#
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@import "workhouse_global";
+@import "minima";
+@import "workhouse";
+

@@ -1,0 +1,52 @@
+// =============================================================================
+// Copyright (c) 2019 Windy Darian
+// MIT License
+// =============================================================================
+
+// Overriding minima
+a {
+	&:visited {
+		color: $brand-color-dark;
+	}
+	&:hover {
+		color: $secondary_color;
+		text-decoration: inherit;
+	}
+}
+
+pre, code {
+	background-color: $code-background-color;
+	border: 1px solid $grey-color-light;
+}
+
+table {
+	tr {
+		&:nth-child(even) {
+			background-color: darken($grey-color-light, 4%);
+			// Minima is a light theme, so it was originally lighten() here
+		}
+	}
+}
+
+.site-title {
+	&, &:visited {
+		color: $tertiary_color;
+	}
+}
+
+.site-nav {
+	.page-link {
+		color: $brand_color;
+		&:hover {
+			color: $secondary_color;
+		}
+	}
+}
+
+// Syntax highlighting
+.highlight {
+	background: initial;
+	.highlighter-rouge & {
+		background: $code-background-color;
+	}
+}
