@@ -45,3 +45,10 @@ exclude:
   - vendor/ruby/
   - LICENSE.txt
   - third_party.txt
+
+header_pages:
+  - pages/posts.html
+  - pages/portfolio.html
+  - pages/aboutme.html
+
+
