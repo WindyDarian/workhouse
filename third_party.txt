@@ -1,4 +1,4 @@
-Original theme license (https://github.com/jekyll/minima):
+Original theme license (https://github.com/jekyll/minima)
 ================================================================================
 The MIT License (MIT)
 
