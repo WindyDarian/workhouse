@@ -47,7 +47,7 @@ exclude:
   - third_party.txt
 
 header_pages:
-  - pages/posts.html
+  - pages/posts.md
   - pages/aboutme.html
 
 

@@ -6,44 +6,32 @@
 # Based on home.html from minima theme. See third_party.txt for original
 # license.
 # ==============================================================================
-#
+# 
 # Shows a list of posts.
 # inputs:
-#   in_post_limit: number of posts to show. Show all if 0
-#   in_show_excerpts: whether to show excerpts.
-#   # Two inputs below are used to show/hide old migrated from wordpress
-#   in_required_post_variable: post must have this variable with non null value.
-#     no effect if empty.
-#   in_blocked_post_variable: post must not have this variable in order to be
-#     displayed.
+#   post_limit: number of posts to show. Show all if 0
+#   show_excerpts: whether to show excerpts.
+#   ignore_archived: whether to ignore posts in "archived" category
 {%- endcomment -%}
 
-{%- assign _posts = site.posts -%}
-{%- if in_required_post_variable -%}
-	{%- assign _cond = "item." | append: in_required_post_variable -%}
-	{%- assign _posts = _posts | where_exp:"item",_cond -%}
-{%- endif -%}
-
-{%- if in_blocked_post_variable -%}
-	{%- assign _cond = "item." | append: in_blocked_post_variable | append: " == nil" -%}
-	{%- assign _posts = _posts | where_exp:"item", _cond -%}
-{%- endif -%}
-
-{%- if _posts.size > 0 -%}
+{%- if site.posts.size > 0 -%}
 <ul class="post-list">
-	{%- for post in _posts limit:(in_post_limit | default: _posts.size) -%}
-	<li>
+	{%- for post in site.posts limit:(include.post_limit | default: site.posts.size) -%}
+		{%- if include.ignore_archived and post.categories contains "archived" -%}
+			{%- continue -%}
+		{%- endif -%}
+		<li>
 		{%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
 		<span class="post-meta">{{ post.date | date: date_format }}</span>
 		<h3>
 			<a class="post-link" href="{{ post.url | relative_url }}">
-			{{ post.title | escape }}
+				{{ post.title | escape }}
 			</a>
 		</h3>
-		{%- if in_show_excerpts | default: false -%}
+		{%- if include.show_excerpts | default: false -%}
 			{{ post.excerpt }}
 		{%- endif -%}
-	</li>
+		</li>
 	{%- endfor -%}
 </ul>
 {%- endif -%}
