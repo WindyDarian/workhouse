@@ -19,6 +19,7 @@ layout: default
 <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
 {%- assign in_post_limit = 6 -%}
 {%- assign in_show_excerpts = true -%}
+{%- assign in_blocked_post_variable = "wordpress_id" -%}
 {%- include post_list.inl.html -%}
 
 <p class="feed-subscribe"><svg class="svg-icon orange"><use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use></svg><a href="{{ "/feed.xml" | relative_url }}">Subscribe</a></p>

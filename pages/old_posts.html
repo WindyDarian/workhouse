@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Posts
-permalink: /posts/
+permalink: /old_posts/
 ---
 <h1>Posts</h1>
 
 <ul>
-	{%- assign in_blocked_post_variable = "wordpress_id" -%}
+	{%- assign in_show_old_posts = true -%}
 	{%- include post_list.inl.html -%}
 </ul>

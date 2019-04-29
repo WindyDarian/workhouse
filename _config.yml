@@ -48,7 +48,6 @@ exclude:
 
 header_pages:
   - pages/posts.html
-  - pages/portfolio.html
   - pages/aboutme.html
 
 
