@@ -5,8 +5,9 @@
 
 // Migrated comment data
 .wh-comment {
-  border-left: 4px solid $grey-color-light;
-  padding-left: $spacing-unit / 2;
+	border-left: 4px solid $grey-color-light;
+	padding-left: $spacing-unit / 2;
+	list-style: none;
 }
 
 // Overriding minima
