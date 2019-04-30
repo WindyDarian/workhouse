@@ -7,6 +7,7 @@
 {%- endcomment -%}
 
 {%- if page.comments and page.comments.size > 0 -%}
+<div>
 <h2>Comments</h2>
 <ul>
 {%- for comment in page.comments -%}
@@ -22,6 +23,7 @@
 {%- endfor -%}
 </ul>
 <p><small>Comments were from migrated old data. I am too lazy so you can't add new comments yet. Sorry!</small></p>
+</div>
 {%- endif -%}
 
 
