@@ -1,0 +1,27 @@
+{%- comment -%}
+# ==============================================================================
+# Copyright (c) 2019 Windy Darian
+# MIT License
+# ==============================================================================
+# Shows old comments from migrated data.
+{%- endcomment -%}
+
+{%- if page.comments and page.comments.size > 0 -%}
+<h2>Comments</h2>
+<ul>
+{%- for comment in page.comments -%}
+	<li class="wh-comment">
+	{%- assign _date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+	{%- if comment.author_url and comment.author_url != empty -%}
+		<span class="post-meta"><a href="{{comment.author_url | escape}}">{{ comment.author | escape }}</a> wrote on {{ comment.date | date: _date_format }}:</span>
+	{%- else -%}
+		<span class="post-meta">{{ comment.author | escape }} wrote on {{ comment.date | date: _date_format }}:</span>
+	{%- endif -%}
+	<p>{{ comment.content }}</p>
+	</li>
+{%- endfor -%}
+</ul>
+<p><small>Comments were from migrated old data. I am too lazy so you can't add new comments yet. Sorry!</small></p>
+{%- endif -%}
+
+

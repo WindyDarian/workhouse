@@ -3,6 +3,12 @@
 // MIT License
 // =============================================================================
 
+// Migrated comment data
+.wh-comment {
+  border-left: 4px solid $grey-color-light;
+  padding-left: $spacing-unit / 2;
+}
+
 // Overriding minima
 a {
 	&:visited {
@@ -50,3 +56,4 @@ table {
 		background: $code-background-color;
 	}
 }
+
