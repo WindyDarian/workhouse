@@ -4,6 +4,7 @@
 layout: post
 title: Switched to Jekyll!
 image: /assets/post_images/2019-04-30-jekyll.png
+image_width: 256px
 ---
 
 {:.ln-en}
@@ -11,6 +12,8 @@ I switched to Jekyll and moved all data over!
 
 {:.ln-zh}
 窝开始用Jekyll了！
+
+<!--more-->
 
 {:.ln-en}
 Now I have a GitHub repository for my blog at
@@ -22,8 +25,6 @@ before this are still accessible from the
 把之前的数据都转移到了Jekyll，甚至放到了GitHub上
 （[这里](https://github.com/WindyDarian/workhouse)）。为了方便阅读（和掩盖黑历史！）
 比这篇博客更早的文章[可以在这里找到]({% link pages/all_posts.md %})。
-
-<!-- more -->
 
 {:.ln-en}
 It had been a while since I last posted. By a while, I mean 2 years and 3

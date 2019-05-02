@@ -6,11 +6,11 @@
 # Based on home.html from minima theme. See third_party.txt for original
 # license.
 # ==============================================================================
-# 
+#
 # Shows a list of posts.
 # inputs:
 #   post_limit: number of posts to show. Show all if 0
-#   show_excerpts: whether to show excerpts.
+#   show_excerpts: whether to show excerpts and post image
 #   ignore_archived: whether to ignore posts in "archived" category
 {%- endcomment -%}
 
@@ -30,6 +30,9 @@
 		</h3>
 		{%- if include.show_excerpts | default: false -%}
 			{{ post.excerpt }}
+			{%- if post.image -%}
+				<a href="{{ post.url | relative_url }}"><img width="{{post.image_width | default:"256px"}}" src="{{post.image | escape}}" /></a>
+			{%- endif -%}
 		{%- endif -%}
 		</li>
 	{%- endfor -%}
