@@ -58,6 +58,11 @@ table {
 	}
 }
 
+.ln-options {
+	float: right;
+	padding-right: $spacing-unit;
+}
+
 .ln-zh {
-	display: none; //TODO: multilanguage support!
+	display: none;  // Will display when language checkbox in page is checked
 }

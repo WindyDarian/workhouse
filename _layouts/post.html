@@ -18,8 +18,23 @@ layout: default
 						</time>
 						{%- assign author = page.author | default: site.author -%}
 						{%- if author -%}
-								• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ author | escape }}</span></span>
-						{%- endif -%}</p>
+								• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ author | escape }} </span></span>
+						{%- endif -%}
+						{%- assign _counter = 0 -%}
+						{%- if page.languages.size > 1 -%}
+						<span class="post-meta ln-options">
+							{%- if page.languages contains "en" -%}
+								{%- assign _counter = _counter | plus: 1 -%}
+								<span lang="en"><input type="checkbox" id="lang-toggle-en" checked="true"/><label for="lang-toggle-en">English</label></span>
+							{%- endif -%}
+							{%- if page.languages contains "zh" -%}
+								{% if _counter > 0 %} • {% endif %}
+								{%- assign _counter = _counter | plus: 1 -%}
+								<span lang="zh"><input type="checkbox" id="lang-toggle-zh" /><label for="lang-toggle-zh">简体中文</label></span>
+							{%- endif -%}
+						</span>
+						{%- endif -%}
+				</p>
 		</header>
 
 		<div class="post-content e-content" itemprop="articleBody">
@@ -34,3 +49,48 @@ layout: default
 
 		<a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
 </article>
+
+{%- if page.languages.size > 1 -%}
+<script>
+	{%- if page.languages contains "en" -%}
+		var en_button = document.getElementById("lang-toggle-en");
+		if (en_button) {
+			var on_checked_change = function() {
+				if (en_button.checked) {
+					var elements = document.getElementsByClassName('ln-en');
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].style.display = "block";
+					}
+				}
+				else {
+					var elements = document.getElementsByClassName('ln-en');
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].style.display = "none";
+					}
+				}
+			}
+			en_button.addEventListener("change", on_checked_change);
+		}
+	{%- endif -%}
+	{%- if page.languages contains "zh" -%}
+		var zh_button = document.getElementById("lang-toggle-zh");
+		if (zh_button) {
+			var on_checked_change = function() {
+				if (zh_button.checked) {
+					var elements = document.getElementsByClassName('ln-zh');
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].style.display = "block";
+					}
+				}
+				else {
+					var elements = document.getElementsByClassName('ln-zh');
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].style.display = "none";
+					}
+				}
+			}
+			zh_button.addEventListener("change", on_checked_change);
+		}
+	{%- endif -%}
+</script>
+{%- endif -%}
