@@ -36,8 +36,7 @@ on the server regularly, because I was using WordPress. Every once in a while I
 had to:
 
 {:.ln-zh lang="zh"}
-已经很久没有写过博客了。(很久指两年零三个月。）然而因为用的是自搭的WordPress，即使在没
-写博客的这段时间，窝也必须时不时地维护VPS服务器，以下是例行维护时需要做的事情：
+已经很久没有写过博客了。(很久指两年零三个月。）然而因为用的是自搭的WordPress，即使在没写博客的这段时间，窝也必须时不时地维护VPS服务器，以下是例行维护时需要做的事情：
 
 {:.ln-en lang="en"}
 > 1. Log in to my vps server with SSH.
@@ -69,9 +68,7 @@ just to lazy to replace it with another thing. But I realized I need something
 to save me from the labor.
 
 {:.ln-zh lang="zh"}
-虽然写了脚本让事情轻松很多，需要手动做的事情还是很繁琐。即使如此窝也就这样用了很久的
-WordPress毕竟窝不是经常做web相关的码农（还是做游戏最棒！）。终于厌烦了重复劳动，决定
-找新的解决方案。
+虽然写了脚本让事情轻松很多，需要手动做的事情还是很繁琐。即使如此窝也就这样用了很久的WordPress毕竟窝不是经常做web相关的码农（还是做游戏最棒！）。终于厌烦了重复劳动，决定找新的解决方案。
 
 {:.ln-en lang="en"}
 I like version control tools, especially git since it's decentralized and easy
@@ -80,9 +77,7 @@ WordPress and the blog data in mysql database, it didn't feel I was controlling
 them... Plus I want to use my favorite text editor, and markdown.
 
 {:.ln-zh lang="zh"}
-窝喜欢版本控制软件，尤其是git。它在版本管理的同时还是去中心化的，也就是说每一个克隆了
-仓库的电脑都是一个有完整历史的备份。总之用git是非常开心的一件事！然而在WordPress里就
-找不到这样的快乐了:(... 此外，如果能用窝喜欢的文本编辑器那最好不过。
+窝喜欢版本控制软件，尤其是git。它在版本管理的同时还是去中心化的，也就是说每一个克隆了仓库的电脑都是一个有完整历史的备份。总之用git是非常开心的一件事！然而在WordPress里就找不到这样的快乐了:(... 此外，如果能用窝喜欢的文本编辑器那最好不过。
 
 {:.ln-en lang="en"}
 So I made the switch!
