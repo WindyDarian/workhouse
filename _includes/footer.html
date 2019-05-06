@@ -12,25 +12,27 @@
 
 <div class="wrapper">
 
-    	<h2 class="footer-heading">{{ site.title | escape }}</h2>
+	<h2 class="footer-heading">{{ site.title | escape }}</h2>
 
 	<div clase="footer-col-wrapper">
 
 	<div class="footer-col footer-col-1">
-        {%- comment -%}
-                {%- if site.description -%}
-                        <p>{{- site.description | escape -}}</p>
-                {%- endif -%}
-        {%- endcomment -%}
-        <p>A blog!</p>
+		{%- comment -%}
+				{%- if site.description -%}
+						<p>{{- site.description | escape -}}</p>
+				{%- endif -%}
+		{%- endcomment -%}
+		<ul class="contact-list">
+			<li>A blog!</li>
+			<li><a href="https://github.com/WindyDarian/workhouse">Source on GitHub</a></li>
+		</ul>
+		<p>Generated with <a href="https://jekyllrb.com/">Jekyll</a></p>
 	</div>
-
 
 	<div class="footer-col footer-col-2">
-		<p class="feed-subscribe"><svg class="svg-icon orange"><use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use></svg><a href="{{ "/feed.xml" | relative_url }}">Subscribe</a></p>
+		<p class="feed-subscribe"><svg class="svg-icon orange"><use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use></svg><a href="{{ "/feed.xml" | relative_url }}"> Subscribe</a></p>
 		{%- include social.html -%}
 	</div>
-
 
 	<div class="footer-col footer-col-3">
 		<p>
