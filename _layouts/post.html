@@ -32,6 +32,16 @@ layout: default
 								{%- assign _counter = _counter | plus: 1 -%}
 								<span lang="zh"><input type="checkbox" id="lang-toggle-zh" /><label for="lang-toggle-zh">简体中文</label></span>
 							{%- endif -%}
+							{%- if page.languages contains "zh-Hant" -%}
+							{% if _counter > 0 %} • {% endif %}
+							{%- assign _counter = _counter | plus: 1 -%}
+								<span lang="zh-Hant"><input type="checkbox" id="lang-toggle-zh-Hant" /><label for="lang-toggle-zh-Hant">繁體中文</label></span>
+							{%- endif -%}
+							{%- if page.languages contains "ja" -%}
+								{% if _counter > 0 %} • {% endif %}
+								{%- assign _counter = _counter | plus: 1 -%}
+								<span lang="ja"><input type="checkbox" id="lang-toggle-ja" /><label for="lang-toggle-ja">日本語</label></span>
+							{%- endif -%}
 						</span>
 						{%- endif -%}
 				</p>
@@ -92,6 +102,46 @@ layout: default
 				}
 			}
 			zh_button.addEventListener("change", on_checked_change);
+		}
+	{%- endif -%}
+	{%- if page.languages contains "zh-Hant" -%}
+		var zh_hant_button = document.getElementById("lang-toggle-zh-Hant");
+		if (zh_hant_button) {
+			var on_checked_change = function() {
+				if (zh_hant_button.checked) {
+					var elements = document.getElementsByClassName('ln-zh-Hant');
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].style.display = "block";
+					}
+				}
+				else {
+					var elements = document.getElementsByClassName('ln-zh-Hant');
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].style.display = "none";
+					}
+				}
+			}
+			zh_hant_button.addEventListener("change", on_checked_change);
+		}
+	{%- endif -%}
+	{%- if page.languages contains "ja" -%}
+		var jp_button = document.getElementById("lang-toggle-ja");
+		if (jp_button) {
+			var on_checked_change = function() {
+				if (jp_button.checked) {
+					var elements = document.getElementsByClassName('ln-ja');
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].style.display = "block";
+					}
+				}
+				else {
+					var elements = document.getElementsByClassName('ln-ja');
+					for (var i = 0; i < elements.length; i++) {
+						elements[i].style.display = "none";
+					}
+				}
+			}
+			jp_button.addEventListener("change", on_checked_change);
 		}
 	{%- endif -%}
 </script>
