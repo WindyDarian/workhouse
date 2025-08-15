@@ -49,4 +49,4 @@ exclude:
 
 header_pages:
   - pages/posts.md
-  - pages/aboutme.html
+  - pages/aboutme.md

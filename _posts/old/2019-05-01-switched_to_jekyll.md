@@ -5,6 +5,8 @@ layout: post
 title: Switched to Jekyll!
 image: /assets/post_images/2019-04-30-jekyll.png
 image_width: 256px
+categories:
+  - archived
 languages:
   - en
   - zh

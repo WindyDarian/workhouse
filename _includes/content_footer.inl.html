@@ -4,6 +4,3 @@
 # MIT License
 # ==============================================================================
 {%- endcomment -%}
-
-{%- if site.email -%}<small class="post-meta"><a class="u-email" href="mailto:{{ site.email }}?subject=Comment on {{page.title | escape}}">Email me</a> if you have anything to say.</small>{% endif %}
-{% if site.github_repository %}<small class="post-meta">You can also help me fix typos and leave comments with a <a href="{{site.github_repository}}/blob/master/{{page.path}}">pull request</a>!</small>{%- endif -%}
