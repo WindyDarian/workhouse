@@ -22,4 +22,4 @@ See also
 * [Pixiv](https://www.pixiv.net/users/3842336)
 * [GitHub](https://github.com/WindyDarian)
 
-![a](/assets/post_images/2023-profile.webp){: width="256" }
+![a](/assets/post_images/2025-profile.webp){: width="256" }
