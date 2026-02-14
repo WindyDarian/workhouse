@@ -25,22 +25,38 @@ layout: default
 						<span class="post-meta ln-options">
 							{%- if page.languages contains "en" -%}
 								{%- assign _counter = _counter | plus: 1 -%}
-								<span lang="en"><input type="checkbox" id="lang-toggle-en" checked="true"/><label for="lang-toggle-en">English</label></span>
+								{%- if page.default_languages contains "en" -%}
+									<span lang="en"><input type="checkbox" id="lang-toggle-en" checked/><label for="lang-toggle-en">English</label></span>
+								{%- else -%}
+									<span lang="en"><input type="checkbox" id="lang-toggle-en"/><label for="lang-toggle-en">English</label></span>
+								{%- endif -%}
 							{%- endif -%}
 							{%- if page.languages contains "zh" -%}
 								{% if _counter > 0 %} • {% endif %}
 								{%- assign _counter = _counter | plus: 1 -%}
-								<span lang="zh"><input type="checkbox" id="lang-toggle-zh" /><label for="lang-toggle-zh">简体中文</label></span>
+								{%- if page.default_languages contains "zh" -%}
+									<span lang="zh"><input type="checkbox" id="lang-toggle-zh" checked/><label for="lang-toggle-zh">简体中文</label></span>
+								{%- else -%}
+									<span lang="zh"><input type="checkbox" id="lang-toggle-zh"/><label for="lang-toggle-zh">简体中文</label></span>
+								{%- endif -%}
 							{%- endif -%}
 							{%- if page.languages contains "zh-Hant" -%}
 							{% if _counter > 0 %} • {% endif %}
 							{%- assign _counter = _counter | plus: 1 -%}
-								<span lang="zh-Hant"><input type="checkbox" id="lang-toggle-zh-Hant" /><label for="lang-toggle-zh-Hant">繁體中文</label></span>
+								{%- if page.default_languages contains "zh-Hant" -%}
+									<span lang="zh-Hant"><input type="checkbox" id="lang-toggle-zh-Hant" checked/><label for="lang-toggle-zh-Hant">繁體中文</label></span>
+								{%- else -%}
+									<span lang="zh-Hant"><input type="checkbox" id="lang-toggle-zh-Hant"/><label for="lang-toggle-zh-Hant">繁體中文</label></span>
+								{%- endif -%}
 							{%- endif -%}
 							{%- if page.languages contains "ja" -%}
 								{% if _counter > 0 %} • {% endif %}
 								{%- assign _counter = _counter | plus: 1 -%}
-								<span lang="ja"><input type="checkbox" id="lang-toggle-ja" /><label for="lang-toggle-ja">日本語</label></span>
+								{%- if page.default_languages contains "ja" -%}
+									<span lang="ja"><input type="checkbox" id="lang-toggle-ja" checked/><label for="lang-toggle-ja">日本語</label></span>
+								{%- else -%}
+									<span lang="ja"><input type="checkbox" id="lang-toggle-ja"/><label for="lang-toggle-ja">日本語</label></span>
+								{%- endif -%}
 							{%- endif -%}
 						</span>
 						{%- endif -%}
@@ -64,85 +80,53 @@ layout: default
 
 {%- if page.languages.size > 1 -%}
 <script>
-	{%- if page.languages contains "en" -%}
-		var en_button = document.getElementById("lang-toggle-en");
-		if (en_button) {
-			var on_checked_change = function() {
-				if (en_button.checked) {
-					var elements = document.getElementsByClassName('ln-en');
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].style.display = "block";
-					}
-				}
-				else {
-					var elements = document.getElementsByClassName('ln-en');
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].style.display = "none";
-					}
-				}
-			}
-			en_button.addEventListener("change", on_checked_change);
+(function () {
+	var langConfigs = [
+		{%- if page.languages contains "en" -%}
+			{ toggleId: "lang-toggle-en", className: "ln-en" },
+		{%- endif -%}
+		{%- if page.languages contains "zh" -%}
+			{ toggleId: "lang-toggle-zh", className: "ln-zh" },
+		{%- endif -%}
+		{%- if page.languages contains "zh-Hant" -%}
+			{ toggleId: "lang-toggle-zh-Hant", className: "ln-zh-Hant" },
+		{%- endif -%}
+		{%- if page.languages contains "ja" -%}
+			{ toggleId: "lang-toggle-ja", className: "ln-ja" },
+		{%- endif -%}
+	];
+
+	// function setVisible(el, visible) {
+	// 	el.style.display = visible ? "block" : "none";
+	// 	el.hidden = !visible;
+	// 	el.setAttribute("aria-hidden", visible ? "false" : "true");
+	// }
+
+	function applyConfig(cfg) {
+		var checkbox = document.getElementById(cfg.toggleId);
+		if (!checkbox) return;
+		var elements = document.getElementsByClassName(cfg.className);
+		var display = checkbox.checked ? "block" : "none";
+
+		for (var i = 0; i < elements.length; i++) {
+			elements[i].style.display = display;
 		}
-	{%- endif -%}
-	{%- if page.languages contains "zh" -%}
-		var zh_button = document.getElementById("lang-toggle-zh");
-		if (zh_button) {
-			var on_checked_change = function() {
-				if (zh_button.checked) {
-					var elements = document.getElementsByClassName('ln-zh');
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].style.display = "block";
-					}
-				}
-				else {
-					var elements = document.getElementsByClassName('ln-zh');
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].style.display = "none";
-					}
-				}
-			}
-			zh_button.addEventListener("change", on_checked_change);
+	}
+
+	function initLangToggles() {
+		for (var i = 0; i < langConfigs.length; i++) {
+			(function (cfg) {
+				var checkbox = document.getElementById(cfg.toggleId);
+				if (!checkbox) return;
+				applyConfig(cfg);
+				checkbox.addEventListener("change", function () {
+					applyConfig(cfg);
+				});
+			})(langConfigs[i]);
 		}
-	{%- endif -%}
-	{%- if page.languages contains "zh-Hant" -%}
-		var zh_hant_button = document.getElementById("lang-toggle-zh-Hant");
-		if (zh_hant_button) {
-			var on_checked_change = function() {
-				if (zh_hant_button.checked) {
-					var elements = document.getElementsByClassName('ln-zh-Hant');
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].style.display = "block";
-					}
-				}
-				else {
-					var elements = document.getElementsByClassName('ln-zh-Hant');
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].style.display = "none";
-					}
-				}
-			}
-			zh_hant_button.addEventListener("change", on_checked_change);
-		}
-	{%- endif -%}
-	{%- if page.languages contains "ja" -%}
-		var jp_button = document.getElementById("lang-toggle-ja");
-		if (jp_button) {
-			var on_checked_change = function() {
-				if (jp_button.checked) {
-					var elements = document.getElementsByClassName('ln-ja');
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].style.display = "block";
-					}
-				}
-				else {
-					var elements = document.getElementsByClassName('ln-ja');
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].style.display = "none";
-					}
-				}
-			}
-			jp_button.addEventListener("change", on_checked_change);
-		}
-	{%- endif -%}
+	}
+
+	window.addEventListener("load", initLangToggles);
+})();
 </script>
 {%- endif -%}

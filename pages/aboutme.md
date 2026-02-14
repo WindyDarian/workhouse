@@ -4,19 +4,17 @@ title: About Me
 permalink: /aboutme/
 ---
 
-Game Developer \
-Gameplay programmer by day
+Game Developer  
+Gameplay programmer by day  
+💫
 
-Personally, \
-Working on some project! 💫 \
-Updating soon...
+Who wants to make games "that nobody has seen".
 
-個人で何か作っています 💫 \
-準備中...
+Personal Games:
+* 天使戦争 Angels' War - [Steam](https://store.steampowered.com/app/4313530/) \| [Booth](https://windydarian.booth.pm/items/7809838)
+  * (Spoilers) [Memo]({% link _posts/2026-02-13-aw_finale.md %})
 
-个人制作更新准备中 💫
-
-See also
+See Also
 * [X (Formerly Twitter)](https://x.com/WindyDarian)
 * [Bluesky](https://bsky.app/profile/windydarian.bsky.social)
 * [Pixiv](https://www.pixiv.net/users/3842336)
