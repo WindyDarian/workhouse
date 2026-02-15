@@ -13,7 +13,7 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Windy Darian's Workhouse
+title: Windy Darian's
 email: windydarian@gmail.com
 #description: ">-" # this means to ignore newlines until "baseurl:"
 description: ""
@@ -24,7 +24,7 @@ github_username:  WindyDarian
 excerpt_separator: <!--more-->
 author: Windy Darian
 
-github_repository: https://github.com/WindyDarian/workhouse
+github_repository: https://github.com/WindyDarian/blog
 
 # Build settings
 markdown: kramdown

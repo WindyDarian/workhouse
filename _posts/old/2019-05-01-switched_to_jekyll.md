@@ -10,6 +10,8 @@ categories:
 languages:
   - en
   - zh
+default_languages:
+  - en
 ---
 
 {:.ln-en lang="en"}
@@ -22,13 +24,13 @@ I switched to Jekyll and moved all data over!
 
 {:.ln-en lang="en"}
 Now I have a GitHub repository for my blog at
-[here](https://github.com/WindyDarian/workhouse)! The old posts
+[here](https://github.com/WindyDarian/blog)! The old posts
 before this are still accessible from the
 [archived list]({% link pages/all_posts.md %}).
 
 {:.ln-zh lang="zh"}
 把之前的数据都转移到了Jekyll，甚至放到了GitHub上
-（[这里](https://github.com/WindyDarian/workhouse)）。为了方便阅读（和掩盖黑历史！）
+（[这里](https://github.com/WindyDarian/blog)）。为了方便阅读（和掩盖黑历史！）
 比这篇博客更早的文章[可以在这里找到]({% link pages/all_posts.md %})。
 
 {:.ln-en lang="en"}
