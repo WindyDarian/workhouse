@@ -1,3 +1,6 @@
+
+Jekyll-furigana (MIT): See comments in _includes/furigana.html
+
 Original theme license (https://github.com/jekyll/minima)
 ================================================================================
 The MIT License (MIT)

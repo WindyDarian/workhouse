@@ -8,7 +8,7 @@ Game Developer
 Gameplay programmer by day  
 💫
 
-Who wants to make games "that nobody has seen".
+...making games "no one has seen".
 
 Personal Games:
 * 天使戦争 Angels' War - [Steam](https://store.steampowered.com/app/4313530/) \| [Booth](https://windydarian.booth.pm/items/7809838)

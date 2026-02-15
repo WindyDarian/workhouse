@@ -126,7 +126,12 @@ layout: default
 		}
 	}
 
-	window.addEventListener("load", initLangToggles);
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initLangToggles);
+	} else {
+		initLangToggles();
+	}
+	// window.addEventListener("load", initLangToggles);
 })();
 </script>
 {%- endif -%}
